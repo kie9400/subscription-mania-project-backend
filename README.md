@@ -1,5 +1,5 @@
 # 구독 관리 및 조회 서비스, 구독 매니아  
-<img src="https://github.com/user-attachments/assets/86ab70c7-ed93-4fab-846e-2835b5c7541d" alt="구독 매니아 로고" width="300"/>
+<img src="https://github.com/user-attachments/assets/94909ab5-9e2e-4690-869c-f454fe72ab67" alt="구독 매니아 로고" width="300"/>
 
 ---
 
