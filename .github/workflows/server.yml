@@ -17,7 +17,7 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
       - name: Grant execute permission for gradlew
-        run: chmod +x /gradlew
+        run: chmod +x gradlew
       - name: Set active profile for Spring Boot
         run: echo "SPRING_PROFILES_ACTIVE=server" # =server, =local 로 환경설정
       - name: Build with Gradle
