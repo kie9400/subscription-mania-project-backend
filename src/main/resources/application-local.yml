@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   h2:
     console:
       enabled: true
@@ -24,3 +27,12 @@ logging:
       springframework:
         orm:
           jpa: DEBUG
+springdoc:
+  default-flat-param-object: true
+  use-fqn: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    try-it-out-enabled: true
