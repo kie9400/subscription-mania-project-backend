@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'springboot-starter'
+rootProject.name = 'subscription_mania'
