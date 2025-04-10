@@ -28,3 +28,31 @@ jobs:
           docker build -t project-cicd .
           docker tag project-cicd hogeun99/project-cicd:${GITHUB_SHA::7}
           docker push hogeun99/project-cicd:${GITHUB_SHA::7}
+      #아래부턴 CI가아닌 CD를 위한 스크립트
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Start Session Manager session
+        run: aws ssm start-session --target i-0237f7ee34a8bedd7
+      - name: Deploy to Server
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-northeast-2
+        run: |
+          aws ssm send-command \
+            --instance-ids i-0237f7ee34a8bedd7 \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              'if sudo docker ps -a --format \\'{{.Names}}\\' | grep -q \\'^server$\\'; then',
+              '  sudo docker stop server',
+              '  sudo docker rm server',
+              'fi',
+              'sudo docker pull hogeun99/project-cicd:${GITHUB_SHA::7}',
+              'sudo docker tag hogeun99/project-cicd:${GITHUB_SHA::7} project-cicd',
+              'sudo docker run -d --name server -p 8080:8080 project-cicd'
+            ]" \
+            --output text
