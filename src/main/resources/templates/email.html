@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #2c3e50;">구독매니아 이메일 인증</h2>
+    <p>안녕하세요, 구독매니아입니다.</p>
+    <p>아래 인증 코드를 입력하여 이메일 인증을 완료해주세요.</p>
+    <div style="padding: 12px 20px; background-color: #f4f4f4; font-size: 20px; font-weight: bold; border-radius: 6px; display: inline-block;"
+      th:text="${code}">
+    </div>
+    <p style="margin-top: 30px; font-size: 14px; color: #777;">
+        ※ 본 메일은 발신 전용입니다. 회신하셔도 답변되지 않습니다.
+    </p>
+</body>
+</html>
