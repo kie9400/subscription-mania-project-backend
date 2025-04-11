@@ -44,6 +44,14 @@ dependencies {
 	// thymeleaf ( 이메일 HTML 템플릿 )
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	//querydsl 적용
+	implementation "com.querydsl:querydsl-jpa"
+	implementation "com.querydsl:querydsl-core"
+	implementation "com.querydsl:querydsl-collections"
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('javadoc') {
@@ -54,4 +62,17 @@ tasks.named('javadoc') {
 
 test {
     useJUnitPlatform()
+}
+
+// Querydsl 설정
+def querydslDir = "$buildDir/generated/querydsl"
+
+// java source set 에 querydsl QClass 위치 추가
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean {
+	delete file(querydslDir)
 }
