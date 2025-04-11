@@ -1,10 +1,25 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587 #Gmail SMTP 서버 포트
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          writetimeout: 5000
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   data:
     redis:
-      host: 3.39.190.50  # Redis 서버의 호스트 주소를 설정
+      host: localhost  # Redis 서버의 호스트 주소를 설정
       port: 6379       # Redis 서버가 수신 대기하는 포트를 설정
   h2:
     console:
