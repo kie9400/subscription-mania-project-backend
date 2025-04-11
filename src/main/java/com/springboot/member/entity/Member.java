@@ -2,6 +2,7 @@ package com.springboot.member.entity;
 
 import com.springboot.audit.BaseEntity;
 
+import com.springboot.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +46,16 @@ public class Member extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private Gender gender;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private List<Review> reviews = new ArrayList<>();
+
+    public void setReview(Review review){
+        reviews.add(review);
+        if (review.getMember() != this){
+            review.setMember(this);
+        }
+    }
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동 상태"),
