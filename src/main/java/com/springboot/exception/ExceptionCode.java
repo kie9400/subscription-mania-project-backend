@@ -10,7 +10,8 @@ public enum ExceptionCode {
     ACCESS_DENIED(403, "접근 권한이 없습니다."),
     UNAUTHORIZED_ACCESS(403, "관리자 권한이 없습니다."),
     NOT_FOUND(404, "찾을 수 없습니다."),
-    ALREADY_EXISTS(409,"이미 존재합니다.");
+    ALREADY_EXISTS(409,"이미 존재합니다."),
+    LOGOUT_ERROR(409, "로그아웃에 실패했습니다.");
 
     @Getter
     private int status;
