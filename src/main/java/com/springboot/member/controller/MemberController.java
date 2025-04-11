@@ -1,5 +1,6 @@
 package com.springboot.member.controller;
 
+import com.springboot.mail.service.MailService;
 import com.springboot.member.dto.MemberDto;
 import com.springboot.member.entity.Member;
 import com.springboot.member.mapper.MemberMapper;
@@ -8,6 +9,8 @@ import com.springboot.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +20,24 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/members")
+@RequiredArgsConstructor
 @Validated
 public class MemberController {
     private static final String MEMBER_DEFAULT_URL = "/members";
     private final MemberService memberService;
+    private final MailService mailService;
     private final MemberMapper mapper;
 
+    @PostMapping("/sendEmail")
+    public ResponseEntity sendEmail(@RequestBody MemberDto.EmailRequest requestDto) {
+        memberService.sendCode(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body("인증 코드가 전송되었습니다.");
+    }
 
-    public MemberController(MemberService memberService, MemberMapper mapper) {
-        this.memberService = memberService;
-        this.mapper = mapper;
+    @PostMapping("/verifyCode")
+    public ResponseEntity verifyCode(@Valid @RequestBody MemberDto.VerifyCodeRequest reqeustDto) {
+        memberService.verifyCode(reqeustDto);
+        return ResponseEntity.status(HttpStatus.OK).body("인증 완료");
     }
 
     @Operation(summary = "회원 가입", description = "회원 가입을 진행합니다.")
