@@ -24,6 +24,6 @@ public class Category {
     @Column(nullable = false)
     private String Image;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private List<Platform> subCategories = new ArrayList<>();
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+//    private List<Platform> subCategories = new ArrayList<>();
 }
