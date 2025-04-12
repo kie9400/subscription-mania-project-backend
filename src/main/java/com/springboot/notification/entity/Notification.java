@@ -18,9 +18,9 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
-    //알림 기준일 = 3일로 할 예정
+    //알림 기준일 = MVP 모델 기준 3일
     @Column(nullable = false)
-    private String notifyDaysBefore;
+    private int notifyDaysBefore = 3;
 
     //알림 전송 시간
     @Column(name = "scheduled_at", nullable = false)
