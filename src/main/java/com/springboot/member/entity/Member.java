@@ -3,6 +3,7 @@ package com.springboot.member.entity;
 import com.springboot.audit.BaseEntity;
 
 import com.springboot.review.entity.Review;
+import com.springboot.subscription.entity.Subscription;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -50,10 +51,20 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Subscription> subscriptions = new ArrayList<>();
+
     public void setReview(Review review){
         reviews.add(review);
         if (review.getMember() != this){
             review.setMember(this);
+        }
+    }
+
+    public void setSubscription(Subscription subscription){
+        subscriptions.add(subscription);
+        if (subscription.getMember() != this){
+            subscription.setMember(this);
         }
     }
 

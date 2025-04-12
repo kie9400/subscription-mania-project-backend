@@ -2,6 +2,7 @@ package com.springboot.platform.entity;
 
 import com.springboot.category.entity.Category;
 import com.springboot.review.entity.Review;
+import com.springboot.subscription.entity.SubsPlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,13 +44,23 @@ public class Platform {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "platform", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "platform", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<SubsPlan> subsPlans = new ArrayList<>();
 
     public void setReview(Review review){
         reviews.add(review);
         if (review.getPlatform() != this){
             review.setPlatform(this);
+        }
+    }
+
+    public void setSubsPlan(SubsPlan subsPlan){
+        subsPlans.add(subsPlan);
+        if (subsPlan.getPlatform() != this){
+            subsPlan.setPlatform(this);
         }
     }
 
