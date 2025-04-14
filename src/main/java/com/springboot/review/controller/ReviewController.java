@@ -44,4 +44,12 @@ public class ReviewController {
         Review review = reviewService.createReview(platformId, mapper.reviewPostDtoToReview(reviewPostDto), member.getMemberId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @DeleteMapping("{review-id}")
+    public ResponseEntity deleteReview(@PathVariable("platform-id") long platformId,
+                                       @PathVariable("review-id") long reviewId,
+                                       @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        reviewService.deleteReview(platformId, reviewId, member.getMemberId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
