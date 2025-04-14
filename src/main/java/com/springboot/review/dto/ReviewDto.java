@@ -1,10 +1,7 @@
 package com.springboot.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -25,6 +22,21 @@ public class ReviewDto {
         private int rating;
     }
 
+    @Getter
+    public static class Patch{
+        @Schema(hidden = true)
+        @Setter
+        private long reviewId;
+
+        @Schema(description = "리뷰 내용", example = "본문이에용")
+        @NotBlank(message = "리뷰 본문은 공백이어서는 안됩니다.")
+        @Size(min = 1, max = 50, message = "본문은 1~50자 이내이어야 합니다." )
+        private String content;
+
+        @Schema(description = "별점", example = "3")
+        @Range(min = 1, max = 5)
+        private int rating;
+    }
     @AllArgsConstructor
     @Getter
     @Builder
