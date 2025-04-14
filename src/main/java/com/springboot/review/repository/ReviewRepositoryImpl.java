@@ -27,7 +27,10 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
         return queryFactory
                 .select(review.rating.avg())
                 .from(review)
-                .where(review.platform.platformId.eq(platformId))
+                .where(
+                        review.platform.platformId.eq(platformId),
+                        review.reviewStatus.eq(Review.ReviewStatus.REVIEW_POST) // 등록 상태만 포함
+                )
                 .fetchOne();
     }
 
@@ -36,7 +39,10 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
         return queryFactory
                 .select(review.count())
                 .from(review)
-                .where(review.platform.platformId.eq(platformId))
+                .where(
+                        review.platform.platformId.eq(platformId),
+                        review.reviewStatus.eq(Review.ReviewStatus.REVIEW_POST) // 등록 상태만 포함
+                )
                 .fetchOne();
     }
 
