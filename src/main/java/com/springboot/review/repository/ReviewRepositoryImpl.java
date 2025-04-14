@@ -30,4 +30,16 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .where(review.platform.platformId.eq(platformId))
                 .fetchOne();
     }
+
+    @Override
+    public String findReviewStatusByMemberAndPlatform(long memberId, long platformId) {
+        return queryFactory
+                .select(review.reviewStatus.stringValue())
+                .from(review)
+                .where(
+                        review.member.memberId.eq(memberId),
+                        review.platform.platformId.eq(platformId)
+                )
+                .fetchFirst();
+    }
 }
