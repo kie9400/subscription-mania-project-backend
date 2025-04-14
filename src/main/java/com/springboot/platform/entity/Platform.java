@@ -35,7 +35,7 @@ public class Platform {
     private int reviewCount;
 
     @Column(nullable = false)
-    private String Image;
+    private String platformImage;
 
     @Column(name = "service_at", updatable = false, nullable = false)
     private LocalDateTime serviceAt;
