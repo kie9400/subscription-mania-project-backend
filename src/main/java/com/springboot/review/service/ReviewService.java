@@ -1,5 +1,7 @@
 package com.springboot.review.service;
 
+import com.springboot.exception.BusinessLogicException;
+import com.springboot.exception.ExceptionCode;
 import com.springboot.member.entity.Member;
 import com.springboot.member.service.MemberService;
 import com.springboot.platform.entity.Platform;
@@ -8,6 +10,8 @@ import com.springboot.review.entity.Review;
 import com.springboot.review.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,9 +26,16 @@ public class ReviewService {
         this.platformService = platformService;
     }
 
-    public Review createReview(long platformId, Review review, long memberId){
+    public Review createReview(Long platformId, Review review, Long memberId){
         Member findMember = memberService.findVerifiedMember(memberId);
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
+
+        //리뷰 등록 중복 방지
+        String existStatus = reviewRepository.findReviewStatusByMemberAndPlatform(memberId, platformId);
+        if("REVIEW_POST".equals(existStatus)){
+            throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
+        }
+
         review.setMember(findMember);
         review.setPlatform(findPlatform);
         Review savedReview = reviewRepository.save(review);
@@ -40,4 +51,31 @@ public class ReviewService {
         return savedReview;
     }
 
+    public void deleteReview(Long platformId, Long reviewId, Long memberId){
+        Member findMember = memberService.findVerifiedMember(memberId);
+        Platform findPlatform = platformService.findVerifiedPlatform(platformId);
+        Review review = findVerifiedReview(reviewId);
+        isReviewOwner(review, memberId);
+
+        if(review.getReviewStatus().equals(Review.ReviewStatus.REVIEW_DELETE)){
+            throw new BusinessLogicException(ExceptionCode.ALREADY_DELETED);
+        }
+
+        review.setReviewStatus(Review.ReviewStatus.REVIEW_DELETE);
+        reviewRepository.save(review);
+    }
+
+    //리뷰 작성자인지 검증하는 메서드
+    public void isReviewOwner(Review review, long memberId){
+        memberService.isAuthenticatedMember(review.getMember().getMemberId(), memberId);
+    }
+
+    //리뷰가 존재하는지 검증하는 메서드
+    public Review findVerifiedReview(long reviewId){
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        Review review = optionalReview.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.NOT_FOUND));
+
+        return review;
+    }
 }
