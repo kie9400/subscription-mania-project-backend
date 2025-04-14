@@ -8,6 +8,9 @@ import com.springboot.platform.entity.Platform;
 import com.springboot.platform.service.PlatformService;
 import com.springboot.review.entity.Review;
 import com.springboot.review.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +52,14 @@ public class ReviewService {
         findPlatform.setReviewCount(reviewCount.intValue());
 
         return savedReview;
+    }
+
+    public Page<Review> findReviews(int page, int size, Long memberId, Long platformId){
+        Member findMember = memberService.findVerifiedMember(memberId);
+        Platform findPlatform = platformService.findVerifiedPlatform(platformId);
+        Pageable pageable = PageRequest.of(page, size);
+
+        return reviewRepository.findActiveReviewsByPlatform(findPlatform, pageable);
     }
 
     public void deleteReview(Long platformId, Long reviewId, Long memberId){
