@@ -2,6 +2,7 @@ package com.springboot.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,7 +16,7 @@ public class ReviewDto {
         private String content;
 
         @Schema(description = "별점", example = "3")
-        @Size(min = 1, max = 5, message = "별점은 최소 1점은 주어야 합니다. (최대5)")
+        @Range(min = 1, max = 5)
         private int rating;
     }
 
