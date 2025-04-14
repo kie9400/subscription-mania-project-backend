@@ -1,5 +1,6 @@
 package com.springboot.platform.controller;
 
+import com.springboot.dto.MultiResponseDto;
 import com.springboot.dto.SingleResponseDto;
 import com.springboot.member.entity.Member;
 import com.springboot.platform.dto.PlatformDto;
@@ -11,16 +12,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Tag(name = "플랫폼 API", description = "플랫폼 관련 API")
 @RestController
@@ -49,4 +49,18 @@ public class PlatformController {
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
+    @Operation(summary = "플랫폼 전체 조회", description = "플롯폼 전체를 조회합니다. 카테고리 선택시 카테고리별로 전체 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공"),
+            @ApiResponse(responseCode = "401", description = "권한 없음")
+    })
+    @GetMapping
+    public ResponseEntity getPlatforms(@RequestParam(required = false) Long categoryId,
+                                       @RequestParam int page,
+                                       @RequestParam int size) {
+        Page<Platform> platformPage = platformService.findPlatformsCategory(page - 1, size, categoryId);
+        List<Platform> platforms = platformPage.getContent();
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.toAllResponseList(platforms), platformPage), HttpStatus.OK);
+    }
 }

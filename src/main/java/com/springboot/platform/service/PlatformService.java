@@ -5,6 +5,10 @@ import com.springboot.exception.ExceptionCode;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.repository.PlatformRepository;
 import nonapi.io.github.classgraph.utils.VersionFinder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ public class PlatformService {
         this.platformRepository = platformRepository;
     }
 
+    @Transactional(readOnly = true)
     public Platform findPlatform(long platformId){
         Platform findPlatform = findVerifiedPlatform(platformId);
 
@@ -27,6 +32,14 @@ public class PlatformService {
         return findPlatform;
     }
 
+    //플랫폼 전체 조회 및 카테고리별 전체 조회
+    @Transactional(readOnly = true)
+    public Page<Platform> findPlatformsCategory(int page, int size, Long categoryId){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("platformId").descending());
+        return platformRepository.findAllByCategory(categoryId, pageable);
+    }
+
+    //존재하는 플랫폼인지 검증
     public Platform findVerifiedPlatform(long platformId){
         Optional<Platform> optionalPlatform = platformRepository.findById(platformId);
 

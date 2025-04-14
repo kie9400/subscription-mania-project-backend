@@ -48,4 +48,22 @@ public class PlatformDto {
                         "{\"subsPlanId\": 3, \"planName\": \"프리미엄\", \"price\": 17000}]")
         private List<PlanDto.Response> plans;
     }
+
+    @AllArgsConstructor
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    public static class AllResponse{
+        @Parameter(description = "플랫폼 ID", example = "1")
+        private long platformId;
+
+        @Schema(description = "플랫폼 이름", example = "넷플릭스")
+        private String platformName;
+
+        @Schema(description = "플랫폼 이미지", example = "/images/platform/netflix.png")
+        private String platformImage;
+
+        @Schema(description = "평균 별점", example = "3.5")
+        private double ratingAvg;
+    }
 }
