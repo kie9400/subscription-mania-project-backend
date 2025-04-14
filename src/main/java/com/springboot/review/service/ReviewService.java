@@ -43,13 +43,10 @@ public class ReviewService {
         review.setPlatform(findPlatform);
         Review savedReview = reviewRepository.save(review);
 
+        //리뷰 개수, 별점 업데이트
         //해당 플랫폼에 리뷰 추가 및 리뷰 개수, 별점 업데이트
         findPlatform.getReviews().add(review);
-        Double avgRating = reviewRepository.getAverageRatingByPlatformId(platformId);
-        Long reviewCount = reviewRepository.getReviewCountByPlatformId(platformId);
-
-        findPlatform.setRatingAvg(avgRating);
-        findPlatform.setReviewCount(reviewCount.intValue());
+        updatePlatformReviewStats(findPlatform, savedReview);
 
         return savedReview;
     }
@@ -74,6 +71,18 @@ public class ReviewService {
 
         review.setReviewStatus(Review.ReviewStatus.REVIEW_DELETE);
         reviewRepository.save(review);
+
+        //리뷰 개수, 별점 업데이트
+        updatePlatformReviewStats(findPlatform, review);
+    }
+
+    //해당 플랫폼에 평균 별점, 리뷰 수 갱신 메서드
+    public void updatePlatformReviewStats(Platform platform, Review review){
+        Double avgRating = reviewRepository.getAverageRatingByPlatformId(platform.getPlatformId());
+        Long reviewCount = reviewRepository.getReviewCountByPlatformId(platform.getPlatformId());
+
+        platform.setRatingAvg(avgRating != null ? avgRating : 0.0);
+        platform.setReviewCount(reviewCount != null ? reviewCount.intValue() : 0);
     }
 
     //리뷰 작성자인지 검증하는 메서드
