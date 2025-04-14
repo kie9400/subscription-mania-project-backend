@@ -56,9 +56,12 @@ public class PlatformController {
     })
     @GetMapping
     public ResponseEntity getPlatforms(@RequestParam(required = false) Long categoryId,
+                                       @RequestParam(required = false) String keyword,
+                                       @RequestParam(required = false) Integer rating,
+                                       @RequestParam(defaultValue = "platformId") String sort,
                                        @RequestParam int page,
                                        @RequestParam int size) {
-        Page<Platform> platformPage = platformService.findPlatformsCategory(page - 1, size, categoryId);
+        Page<Platform> platformPage = platformService.findSearchPlatforms(page - 1, size, categoryId, keyword, rating, sort);
         List<Platform> platforms = platformPage.getContent();
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.toAllResponseList(platforms), platformPage), HttpStatus.OK);

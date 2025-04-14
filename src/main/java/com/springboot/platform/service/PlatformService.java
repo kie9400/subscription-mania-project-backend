@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -32,11 +33,22 @@ public class PlatformService {
         return findPlatform;
     }
 
-    //플랫폼 전체 조회 및 카테고리별 전체 조회
+    //플랫폼 전체 조회 (카테고리, 별점, 검색 포함)
     @Transactional(readOnly = true)
-    public Page<Platform> findPlatformsCategory(int page, int size, Long categoryId){
-        Pageable pageable = PageRequest.of(page, size, Sort.by("platformId").descending());
-        return platformRepository.findAllByCategory(categoryId, pageable);
+    public Page<Platform> findSearchPlatforms(int page, int size, Long categoryId, String keyword, Integer rating, String sort) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 검색어가 아예 없으면 전체 조회
+        if (keyword == null) {
+            return platformRepository.findByCategoryAndRating(categoryId, rating, pageable, sort);
+        }
+
+        // 검색어가 있지만 공백뿐이면 예외 처리
+        if (keyword.isBlank() ) {
+            throw new BusinessLogicException(ExceptionCode.SEARCH_NOT_BLANK);
+        }
+
+        return platformRepository.findByCategoryAndKeywordAndRating(categoryId, keyword, rating, pageable, sort);
     }
 
     //존재하는 플랫폼인지 검증
