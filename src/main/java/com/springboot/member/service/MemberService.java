@@ -96,6 +96,13 @@ public class MemberService {
         Random random = new Random();
         return String.format("%06d", random.nextInt(1000000));
     }
+
+    //해당 사용자가 작성자(본인)인지 검증하는 메서드
+    public void isAuthenticatedMember(long memberId, long authenticationMemberId){
+        if(memberId != authenticationMemberId){
+            throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
+        }
+    }
 }
 
 
