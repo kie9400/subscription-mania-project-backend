@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class Platform {
     private String platformImage;
 
     @Column(name = "service_at", updatable = false, nullable = false)
-    private LocalDateTime serviceAt;
+    private LocalDate serviceAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
