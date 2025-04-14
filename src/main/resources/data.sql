@@ -49,7 +49,7 @@ INSERT INTO platform (
 )
 VALUES
   (16, '멜론', '/images/platform/melon.png', '국내 최대 음원 보유, 카카오 연동 가능한 대표 음악 스트리밍 서비스', 0, 0, '2004-11-06', 4),
-  (17, '지니뮤직', '/images/platform/genie.png', 'KT 연계 혜택 제공, 국내 음악 중심의 고음질 스트리밍 서비스', 0, 0, '2012-04-01', 4),
+  (17, '지니 뮤직', '/images/platform/genie.png', 'KT 연계 혜택 제공, 국내 음악 중심의 고음질 스트리밍 서비스', 0, 0, '2012-04-01', 4),
   (18, '유튜브 뮤직', '/images/platform/youtubeMusic.png', '유튜브 콘텐츠 기반의 음악 스트리밍 서비스, 커버곡과 영상 음원 강점', 0, 0, '2015-11-12', 4),
   (19, '플로', '/images/platform/flo.png', 'SKT 연계 음악 플랫폼, 개인화 큐레이션 기능 강화', 0, 0, '2015-01-01', 4),
   (20, '스포티파이', '/images/platform/spotify.png', '글로벌 최대 음악 스트리밍 플랫폼, 다양한 해외 음원과 큐레이션 제공', 0, 0, '2021-02-02', 4);
@@ -80,3 +80,8 @@ INSERT INTO platform (
 )
 VALUES
   (29, 'ChatGPT', '/images/platform/chatgpt.png', 'OpenAI에서 개발한 GPT를 기반으로 하는 대화형 인공지능 서비스', 0, 0, '2023-02-01', 7);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('광고형 스탠다드', 5500, 1),
+('스탠다드', 13500, 1),
+('프리미엄', 17000, 1);
