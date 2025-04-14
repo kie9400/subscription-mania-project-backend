@@ -22,7 +22,7 @@ public class Category {
     private String categoryName;
 
     @Column(nullable = false)
-    private String Image;
+    private String categoryImage;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
     private List<Platform> platforms = new ArrayList<>();
