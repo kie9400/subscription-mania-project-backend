@@ -61,7 +61,7 @@ public class ReviewService {
 
         //삭제된 리뷰인지 검증
         if(findreview.getReviewStatus().equals(Review.ReviewStatus.REVIEW_DELETE)){
-            throw new BusinessLogicException(ExceptionCode.ALREADY_DELETED);
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
         }
 
         //작성자 인지 검증

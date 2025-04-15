@@ -58,6 +58,10 @@ public class SubscriptionService {
         SubsPlan plan = subscriptionService.VerifiedSubsPlan(subsPlanId);
         Subscription findSubs = findVerifiedSubs(subscription.getSubscriptionId());
 
+        if(findSubs.getSubsStatus().equals(Subscription.SubsStatus.SUBSCRIBE_CANCEL)){
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
+        }
+
         isSubsOwner(findSubs, memberId);
 
         //이 플랜이 해당 플랫폼에 속하는 플랜인지 검증
@@ -81,6 +85,19 @@ public class SubscriptionService {
         return subscriptionRepository.save(findSubs);
     }
 
+    public void deleteSubs(Long memberId, Long subscriptionId){
+        Member member = memberService.findVerifiedMember(memberId);
+        Subscription subs = findVerifiedSubs(subscriptionId);
+
+        isSubsOwner(subs, member.getMemberId());
+
+        if (subs.getSubsStatus().equals(Subscription.SubsStatus.SUBSCRIBE_CANCEL)){
+            throw new BusinessLogicException(ExceptionCode.ALREADY_DELETED);
+        }
+
+        subs.setSubsStatus(Subscription.SubsStatus.SUBSCRIBE_CANCEL);
+        subscriptionRepository.save(subs);
+    }
 
     //구독 시작일이 플랫폼 서비스 일자보다 앞서있는지 검증
     public void validateSubsStartDate(Platform platform, Subscription subscription){
