@@ -28,4 +28,19 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
 
         return fetchOne != null;
     }
+
+    @Override
+    public boolean existsByMemberAndPlatformAndNotThisSubscription(Long memberId, Long platformId, Long subsId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(subs)
+                .where(
+                        subs.member.memberId.eq(memberId),
+                        subs.subsPlan.platform.platformId.eq(platformId),
+                        subs.subscriptionId.ne(subsId),
+                        subs.subsStatus.ne(Subscription.SubsStatus.SUBSCRIBE_CANCEL)
+                )
+                .fetchFirst();
+        return fetchOne != null;
+    }
 }

@@ -69,8 +69,9 @@ public class SubscriptionService {
             throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
         }
 
-        //같은 플랫폼에 중복 구독 안되게 설정
-        if (subscriptionRepository.existsSubsStatusByMemberAndPlatform(member.getMemberId(), platform.getPlatformId())){
+        //수정할 구독을 제외하고 -> 해당 플랫폼에 중복 구독이 있는지 검증
+        if (subscriptionRepository.existsByMemberAndPlatformAndNotThisSubscription(member.getMemberId()
+                , platform.getPlatformId(), findSubs.getSubscriptionId())) {
             throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
         }
 
@@ -85,7 +86,7 @@ public class SubscriptionService {
         return subscriptionRepository.save(findSubs);
     }
 
-    public void deleteSubs(Long memberId, Long subscriptionId){
+    public void deleteSubs(Long subscriptionId, Long memberId){
         Member member = memberService.findVerifiedMember(memberId);
         Subscription subs = findVerifiedSubs(subscriptionId);
 
