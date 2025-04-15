@@ -88,7 +88,7 @@ INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 
 INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 ('일반', 14900, 2),
-('IOS', 19500, 2),
+('IOS', 19500, 2);
 
 INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 ('스탠다드', 9900, 3),
@@ -109,12 +109,12 @@ INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 
 INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 ('베이직', 9900, 7),
-('프리미엄', 14900, 7),
+('프리미엄', 14900, 7);
 
 INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 ('베이직', 7900, 8),
 ('프리미엄', 12900, 8);
 
 INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('PC Game Pass', 9500, 29),
-('Xbox Game Pass Ultimate', 16000, 29);
+('PC Game Pass', 9500, 28),
+('Xbox Game Pass Ultimate', 16000, 28);

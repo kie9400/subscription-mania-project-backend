@@ -1,22 +1,27 @@
 package com.springboot.member.controller;
 
+import com.springboot.dto.SingleResponseDto;
 import com.springboot.mail.service.MailService;
 import com.springboot.member.dto.MemberDto;
 import com.springboot.member.entity.Member;
 import com.springboot.member.mapper.MemberMapper;
 import com.springboot.member.service.MemberService;
+import com.springboot.subscription.entity.Subscription;
 import com.springboot.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -54,6 +59,19 @@ public class MemberController {
         URI location = UriCreator.createUri(MEMBER_DEFAULT_URL, createdMember.getMemberId());
 
         return ResponseEntity.created(location).build();
+    }
+
+    @Operation(summary = "아이디(이메일) 찾기", description = "자신의 아이디(이메일)을 찾습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일을 찾았습니다."),
+            @ApiResponse(responseCode = "404", description = "Member not found")
+    })
+    @PostMapping("/findId")
+    public ResponseEntity findIdGetMember(@Valid @RequestBody MemberDto.FindId findIdDto){
+        Member member = memberService.findMemberEmail(mapper.findIdDtoToMember(findIdDto));
+        MemberDto.FindIdResponse response = mapper.memberToFindId(member);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 }
 

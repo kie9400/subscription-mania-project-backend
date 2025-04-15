@@ -74,6 +74,13 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+
+    //아이디를 찾기위한 메서드
+    public Member findMemberEmail(Member member){
+        return memberRepository.findByNameAndPhoneNumber(member.getName(), member.getPhoneNumber())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
     //이메일이 중복인지 확인하는 메서드
     public void verifyExistsEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
