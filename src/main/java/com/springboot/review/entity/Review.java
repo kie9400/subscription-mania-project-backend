@@ -25,7 +25,7 @@ public class Review extends BaseEntity {
     private int rating;
 
     @Column(nullable = false)
-    private int recommendCount;
+    private int recommendCount = 0;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

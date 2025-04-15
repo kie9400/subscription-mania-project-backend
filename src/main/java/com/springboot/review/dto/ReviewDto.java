@@ -48,6 +48,8 @@ public class ReviewDto {
         private String content;
         @Schema(description = "리뷰 작성일", example = "2025-03-21")
         private LocalDateTime createdAt;
+        @Schema(description = "리뷰 추천 수", example = "22")
+        private int recommendCount;
         @Schema(description = "별점", example = "4")
         private int rating;
         @Schema(description = "회원 ID", example = "1")

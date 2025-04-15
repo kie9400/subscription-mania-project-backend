@@ -97,4 +97,36 @@ public class ReviewController {
         reviewService.deleteReview(platformId, reviewId, member.getMemberId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Operation(summary = "리뷰 추천", description = "리뷰를 추천합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "리뷰 추천 완료"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
+            @ApiResponse(responseCode = "404", description = "해당 리뷰가 존재하지 않습니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}")))
+    })
+    @PostMapping("{review-id}/recommend")
+    public ResponseEntity postRecommend(@PathVariable("platform-id") long platformId,
+                                        @PathVariable("review-id") long reviewId,
+                                        @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        reviewService.recommendReview(reviewId, member.getMemberId());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "리뷰 추천 취소", description = "리뷰 추천을 취소합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "추천 취소 완료"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
+            @ApiResponse(responseCode = "404", description = "해당 리뷰가 존재하지 않습니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}")))
+    })
+    @DeleteMapping("{review-id}/recommend")
+    public ResponseEntity deleteRecommend(@PathVariable("platform-id") long platformId,
+                                        @PathVariable("review-id") long reviewId,
+                                        @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        reviewService.cancelRecommend(reviewId, member.getMemberId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

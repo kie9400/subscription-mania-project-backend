@@ -7,6 +7,8 @@ import com.springboot.member.service.MemberService;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.service.PlatformService;
 import com.springboot.review.entity.Review;
+import com.springboot.review.entity.ReviewRecommend;
+import com.springboot.review.repository.ReviewRecommendRepository;
 import com.springboot.review.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,11 +23,13 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberService memberService;
+    private final ReviewRecommendRepository reviewRecommendRepository;
     private final PlatformService platformService;
 
-    public ReviewService(ReviewRepository reviewRepository, MemberService memberService, PlatformService platformService) {
+    public ReviewService(ReviewRepository reviewRepository, MemberService memberService, ReviewRecommendRepository reviewRecommendRepository, PlatformService platformService) {
         this.reviewRepository = reviewRepository;
         this.memberService = memberService;
+        this.reviewRecommendRepository = reviewRecommendRepository;
         this.platformService = platformService;
     }
 
@@ -98,6 +102,41 @@ public class ReviewService {
         //리뷰 개수, 별점 업데이트
         updatePlatformReviewStats(findPlatform, review);
     }
+
+    //추천 등록
+    public void recommendReview(Long reviewId, Long memberId){
+        Review review = findVerifiedReview(reviewId);
+        Member member = memberService.findVerifiedMember(memberId);
+
+        //추천 중복 검증
+        if (reviewRecommendRepository.existsByReviewAndMember(review, member)) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
+        }
+
+        ReviewRecommend recommend = new ReviewRecommend();
+        recommend.setReview(review);
+        recommend.setMember(member);
+        reviewRecommendRepository.save(recommend);
+
+        int count = reviewRecommendRepository.countByReview(review);
+        review.setRecommendCount(count);
+    }
+
+    public void cancelRecommend(Long reviewId, Long memberId) {
+        Review review = findVerifiedReview(reviewId);
+        Member member = memberService.findVerifiedMember(memberId);
+
+        ReviewRecommend recommend = reviewRecommendRepository.findByReviewAndMember(review, member).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.ALREADY_DELETED));
+
+        reviewRecommendRepository.delete(recommend);
+
+        // 추천 수 업데이트
+        int count = reviewRecommendRepository.countByReview(review);
+        review.setRecommendCount(count);
+        reviewRepository.save(review);
+    }
+
 
     //해당 플랫폼에 평균 별점, 리뷰 수 갱신 메서드
     public void updatePlatformReviewStats(Platform platform, Review review){
