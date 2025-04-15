@@ -1,9 +1,7 @@
 package com.springboot.subscription.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,17 +9,36 @@ import java.time.LocalDateTime;
 public class SubscriptionDto {
     @Getter
     public static class Post{
+        @Schema(description = "플랫폼 ID", example = "1")
         private long platformId;
+
+        @Schema(description = "구독 플랜 ID", example = "1")
         private long subsPlanId;
+
+        @Schema(description = "구독 주기", example = "1달")
         private String billingCycle;
+
+        @Schema(description = "구독 시작 날짜", example = "2025-04-15")
         private LocalDate subscriptionAt;
     }
 
     @Getter
     public static class Patch{
+        @Schema(hidden = true)
+        @Setter
+        private long subscriptionId;
+
+        @Schema(description = "플랫폼 ID", example = "1")
+        private long platformId;
+
+        @Schema(description = "구독 플랜 ID", example = "1")
         private long subsPlanId;
+
+        @Schema(description = "구독 주기", example = "1달")
         private String billingCycle;
-        private LocalDateTime subscriptionAt;
+
+        @Schema(description = "구독 시작 날짜", example = "2025-04-15")
+        private LocalDate subscriptionAt;
     }
 
     @AllArgsConstructor
@@ -29,14 +46,25 @@ public class SubscriptionDto {
     @Builder
     @NoArgsConstructor
     public static class Response{
+        @Schema(description = "플랫폼 이름", example = "넷플릭스")
         private String platformName;
+
+        @Schema(description = "플랫폼 이미지", example = "/images/platform/netflix.png")
         private String platformImage;
+
+        @Schema(description = "구독 플랜 명", example = "프리미엄")
         private String SubsPlanName;
+
+        @Schema(description = "구독 시작 날짜", example = "2025-04-15")
         private LocalDateTime subscriptionStartAt;
-        private LocalDateTime subscriptionEndAt;
+
+        @Schema(description = "다음 결제일", example = "2025-05-15")
         private LocalDateTime nextPaymentDate;
+
+        @Schema(description = "요금", example = "12000")
         private int price;
-        private int totalPrice;
+
+        @Schema(description = "구독 주기", example = "1달")
         private String billingCycle;
     }
 }
