@@ -60,6 +60,7 @@ public class SubscriptionController {
     public ResponseEntity deleteSubs(@PathVariable("subscription-id") long subscritpionId,
                                     @Parameter(hidden = true) @AuthenticationPrincipal Member member){
 
+        subscriptionService.deleteSubs(subscritpionId, member.getMemberId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
