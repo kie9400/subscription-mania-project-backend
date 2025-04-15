@@ -2,14 +2,13 @@ package com.springboot.subscription.entity;
 
 import com.springboot.audit.BaseEntity;
 import com.springboot.member.entity.Member;
-import com.springboot.platform.entity.SubsPlan;
+import com.springboot.plan.entity.SubsPlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

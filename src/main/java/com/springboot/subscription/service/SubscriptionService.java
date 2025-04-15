@@ -6,13 +6,14 @@ import com.springboot.member.entity.Member;
 import com.springboot.member.service.MemberService;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.service.PlatformService;
-import com.springboot.platform.service.SubsPlanService;
+import com.springboot.plan.service.SubsPlanService;
 import com.springboot.subscription.entity.Subscription;
 import com.springboot.subscription.repository.SubscriptionRepository;
-import com.springboot.platform.entity.SubsPlan;
+import com.springboot.plan.entity.SubsPlan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -120,4 +121,10 @@ public class SubscriptionService {
     public void isSubsOwner(Subscription subscription, long memberId){
         memberService.isAuthenticatedMember(subscription.getMember().getMemberId(), memberId);
     }
+
+    // 사용자가 카테고리별로 구독내역을 조회하기 위한 메서드
+    public List<Subscription> findSubscriptionsWithPlanAndPlatform(Long memberId) {
+        return subscriptionRepository.findAllByMemberIdWithPlatformAndPlan(memberId);
+    }
+
 }
