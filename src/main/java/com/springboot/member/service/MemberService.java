@@ -64,6 +64,7 @@ public class MemberService {
 
     public Member createMember(Member member){
         verifyExistsEmail(member.getEmail());
+        verifyExistsPhoneNumber(member.getPhoneNumber());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
@@ -81,12 +82,20 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    //이메일이 중복인지 확인하는 메서드
+    //이메일 중복 확인 메서드
     public void verifyExistsEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
 
         if (member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    // 휴대폰 번호 중복 확인 메서드
+    public void verifyExistsPhoneNumber(String phoneNumber){
+        Optional<Member> member = memberRepository.findByPhoneNumber(phoneNumber);
+
+        if(member.isPresent())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_PHONE_NUMBER_EXISTS);
     }
 
     //사용자가 존재하는지 확인하는 메서드
