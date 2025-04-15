@@ -2,11 +2,10 @@ package com.springboot.platform.entity;
 
 import com.springboot.category.entity.Category;
 import com.springboot.review.entity.Review;
-import com.springboot.subscription.entity.SubsPlan;
+import com.springboot.subsplan.entity.SubsPlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package com.springboot.platform.mapper;
 
-import com.springboot.plan.dto.PlanDto;
+import com.springboot.subsplan.dto.PlanDto;
 import com.springboot.platform.dto.PlatformDto;
 import com.springboot.platform.entity.Platform;
 import org.mapstruct.Mapper;

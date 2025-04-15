@@ -1,6 +1,6 @@
 package com.springboot.platform.dto;
 
-import com.springboot.plan.dto.PlanDto;
+import com.springboot.subsplan.dto.PlanDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -2,6 +2,7 @@ package com.springboot.subscription.entity;
 
 import com.springboot.audit.BaseEntity;
 import com.springboot.member.entity.Member;
+import com.springboot.subsplan.entity.SubsPlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

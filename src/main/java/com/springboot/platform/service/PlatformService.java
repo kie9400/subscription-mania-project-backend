@@ -4,14 +4,11 @@ import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.repository.PlatformRepository;
-import nonapi.io.github.classgraph.utils.VersionFinder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -29,7 +26,6 @@ public class PlatformService {
         Platform findPlatform = findVerifiedPlatform(platformId);
 
         //활동중인 회원인지 검증이 필요함
-
         return findPlatform;
     }
 
