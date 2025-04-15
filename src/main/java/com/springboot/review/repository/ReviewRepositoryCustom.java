@@ -12,7 +12,7 @@ public interface ReviewRepositoryCustom {
     Long getReviewCountByPlatformId(Long platformId);
 
     //리뷰 등록상태인지 확인하기위해 조회
-    String findReviewStatusByMemberAndPlatform(long memberId, long platformId);
+    boolean existsReviewPostByMemberAndPlatform(Long memberId, Long platformId);
 
     //해당 플랫폼의 삭제된 리뷰를 제외한 모든 리뷰를 조회
     Page<Review> findActiveReviewsByPlatform(Platform platform, Pageable pageable);

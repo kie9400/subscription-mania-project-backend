@@ -47,16 +47,29 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
     }
 
     @Override
-    public String findReviewStatusByMemberAndPlatform(long memberId, long platformId) {
-        return queryFactory
-                .select(review.reviewStatus.stringValue())
+    public boolean existsReviewPostByMemberAndPlatform(Long memberId, Long platformId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
                 .from(review)
                 .where(
                         review.member.memberId.eq(memberId),
-                        review.platform.platformId.eq(platformId)
+                        review.platform.platformId.eq(platformId),
+                        review.reviewStatus.eq(Review.ReviewStatus.REVIEW_POST)
                 )
                 .fetchFirst();
+
+        return fetchOne != null;
     }
+//    public String findReviewStatusByMemberAndPlatform(long memberId, long platformId) {
+//        return queryFactory
+//                .select(review.reviewStatus.stringValue())
+//                .from(review)
+//                .where(
+//                        review.member.memberId.eq(memberId),
+//                        review.platform.platformId.eq(platformId)
+//                )
+//                .fetchFirst();
+//    }
 
     @Override
     public Page<Review> findActiveReviewsByPlatform(Platform platform, Pageable pageable) {

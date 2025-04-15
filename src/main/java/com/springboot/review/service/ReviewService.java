@@ -38,8 +38,7 @@ public class ReviewService {
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
 
         //리뷰 등록 중복 방지
-        String existStatus = reviewRepository.findReviewStatusByMemberAndPlatform(memberId, platformId);
-        if("REVIEW_POST".equals(existStatus)){
+        if(reviewRepository.existsReviewPostByMemberAndPlatform(findMember.getMemberId(), findPlatform.getPlatformId())){
             throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
         }
 
