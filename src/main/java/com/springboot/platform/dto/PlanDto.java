@@ -1,4 +1,4 @@
-package com.springboot.subsplan.dto;
+package com.springboot.platform.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

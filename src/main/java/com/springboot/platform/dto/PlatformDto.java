@@ -1,6 +1,5 @@
 package com.springboot.platform.dto;
 
-import com.springboot.subsplan.dto.PlanDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -4,6 +4,7 @@ import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.repository.PlatformRepository;
+import com.springboot.platform.repository.SubsPlanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
