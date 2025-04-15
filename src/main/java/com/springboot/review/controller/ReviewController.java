@@ -51,6 +51,14 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "리뷰 수정 완료"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
+            @ApiResponse(responseCode = "400", description = "리뷰 유효성 검증 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 통과 실패\"}")))
+    })
     @PatchMapping("{review-id}")
     public ResponseEntity patchReviews(@PathVariable("platform-id") long platformId,
                                        @Valid @RequestBody ReviewDto.Patch reviewPatchDto,
