@@ -8,12 +8,10 @@ import com.springboot.subscription.service.SubscriptionService;
 import com.springboot.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -32,15 +30,36 @@ public class SubscriptionController {
     }
 
     @PostMapping
-    public ResponseEntity postSubs(@Valid @RequestBody SubscriptionDto.Post postDto,
+    public ResponseEntity postSubs(@Valid @RequestBody SubscriptionDto.Post subsPostDto,
                                    @Parameter(hidden = true) @AuthenticationPrincipal Member member){
-        Long platformId = postDto.getPlatformId();
-        Long subsPlanId = postDto.getSubsPlanId();
+        Long platformId = subsPostDto.getPlatformId();
+        Long subsPlanId = subsPostDto.getSubsPlanId();
 
-        Subscription subscription = mapper.subsPostDtoToSubs(postDto);
+        Subscription subscription = mapper.subsPostDtoToSubs(subsPostDto);
         Subscription createSubs = subscriptionService.createSubs(subscription, member.getMemberId(), platformId, subsPlanId);
         URI location = UriCreator.createUri(SUBSCRIPTION_DEFAULT_URL, createSubs.getSubscriptionId());
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("{subscription-id}")
+    public ResponseEntity patchSubs(@PathVariable("subscription-id") long subscriptionId,
+                                    @Valid @RequestBody SubscriptionDto.Patch subsPatchDto,
+                                    @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        subsPatchDto.setSubscriptionId(subscriptionId);
+        Long platformId = subsPatchDto.getPlatformId();
+        Long subsPlanId = subsPatchDto.getSubsPlanId();
+
+        Subscription subscription = mapper.subsPatchDtoToSubs(subsPatchDto);
+        subscriptionService.updateSubs(subscription, member.getMemberId(), platformId, subsPlanId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("{subscription-id}")
+    public ResponseEntity deleteSubs(@PathVariable("subscription-id") long subscritpionId,
+                                    @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
