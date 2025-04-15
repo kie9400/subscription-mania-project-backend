@@ -1,8 +1,13 @@
 package com.springboot.subscription.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.springboot.category.entity.QCategory;
+import com.springboot.plan.entity.QSubsPlan;
+import com.springboot.platform.entity.QPlatform;
 import com.springboot.subscription.entity.QSubscription;
 import com.springboot.subscription.entity.Subscription;
+
+import java.util.List;
 
 public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
     private final JPAQueryFactory queryFactory;
@@ -42,5 +47,19 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
                 )
                 .fetchFirst();
         return fetchOne != null;
+    }
+
+    @Override
+    public List<Subscription> findAllByMemberIdWithPlatformAndPlan(Long memberId) {
+        QSubsPlan plan = QSubsPlan.subsPlan;
+        QPlatform platform = QPlatform.platform;
+        QCategory category = QCategory.category;
+
+        return queryFactory.selectFrom(subs)
+                .join(subs.subsPlan, plan).fetchJoin()
+                .join(plan.platform, platform).fetchJoin()
+                .join(platform.category, category).fetchJoin()
+                .where(subs.member.memberId.eq(memberId))
+                .fetch();
     }
 }
