@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Tag(name = "리뷰 API", description = "리뷰 관련 컨트롤러")
 @RestController
 @RequestMapping("/platforms/{platform-id}/reviews")
 public class ReviewController {
@@ -49,8 +51,27 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PatchMapping("{review-id}")
+    public ResponseEntity patchReviews(@PathVariable("platform-id") long platformId,
+                                       @Valid @RequestBody ReviewDto.Patch reviewPatchDto,
+                                       @PathVariable("review-id") long reviewId,
+                                       @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        reviewPatchDto.setReviewId(reviewId);
+        Review review = reviewService.updateReview(platformId, mapper.reviewPatchDtoToReview(reviewPatchDto), member.getMemberId());
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "리뷰 전체 조회", description = "리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "리뷰 조회 완료"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
+    })
     @GetMapping
-    public ResponseEntity getComments(@PathVariable("platform-id") long platformId,
+    public ResponseEntity getReviews(@PathVariable("platform-id") long platformId,
                                       @Positive @RequestParam int page,
                                       @Positive @RequestParam int size,
                                       @Parameter(hidden = true) @AuthenticationPrincipal Member member){

@@ -51,6 +51,29 @@ public class ReviewService {
         return savedReview;
     }
 
+    public Review updateReview(Long platformId, Review review, Long memberId){
+        Member findMember = memberService.findVerifiedMember(memberId);
+        Platform findPlatform = platformService.findVerifiedPlatform(platformId);
+        Review findreview = findVerifiedReview(review.getReviewId());
+
+        //삭제된 리뷰인지 검증
+        if(findreview.getReviewStatus().equals(Review.ReviewStatus.REVIEW_DELETE)){
+            throw new BusinessLogicException(ExceptionCode.ALREADY_DELETED);
+        }
+
+        //작성자 인지 검증
+        isReviewOwner(findreview, memberId);
+
+        Optional.ofNullable(review.getContent())
+                .ifPresent(content -> findreview.setContent(content));
+        Optional.of(review.getRating())
+                .ifPresent(rating -> findreview.setRating(rating));
+
+        Review saveReview = reviewRepository.save(findreview);
+        updatePlatformAverageRatingOnly(findPlatform);
+        return saveReview;
+    }
+
     public Page<Review> findReviews(int page, int size, Long memberId, Long platformId){
         Member findMember = memberService.findVerifiedMember(memberId);
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
@@ -83,6 +106,12 @@ public class ReviewService {
 
         platform.setRatingAvg(avgRating != null ? avgRating : 0.0);
         platform.setReviewCount(reviewCount != null ? reviewCount.intValue() : 0);
+    }
+
+    //평균 별점만 갱신하는 메서드
+    private void updatePlatformAverageRatingOnly(Platform platform) {
+        Double avgRating = reviewRepository.getAverageRatingByPlatformId(platform.getPlatformId());
+        platform.setRatingAvg(avgRating != null ? avgRating : 0.0);
     }
 
     //리뷰 작성자인지 검증하는 메서드
