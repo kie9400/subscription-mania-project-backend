@@ -10,6 +10,7 @@ public enum ExceptionCode {
     INVALID_REFRESH_TOKEN(400, "유효하지 않은 리플래시 토큰입니다."),
     INVALID_CODE(400, "인증코드가 일치하지 않습니다."),
     USER_NOT_LOGGED_IN(401, "로그인 하지 않은 유저입니다."),
+    INVALID_SUBSCRIPTION_DATE(400, "구독 시작일은 플랫폼 서비스 시작일보다 빠를 수 없습니다."),
     ACCESS_DENIED(403, "FORBIDDEN, 접근 권한이 없습니다."),
     UNAUTHORIZED_ACCESS(403, "관리자 권한이 없습니다."),
     NOT_FOUND(404, "찾을 수 없습니다."),
