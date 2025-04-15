@@ -2,12 +2,13 @@ package com.springboot.subscription.entity;
 
 import com.springboot.audit.BaseEntity;
 import com.springboot.member.entity.Member;
-import com.springboot.subsplan.entity.SubsPlan;
+import com.springboot.platform.entity.SubsPlan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +24,7 @@ public class Subscription extends BaseEntity {
     private String billingCycle;
 
     @Column(name = "subscription_at", updatable = false, nullable = false)
-    private LocalDateTime subscriptionAt;
+    private LocalDate subscriptionAt;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

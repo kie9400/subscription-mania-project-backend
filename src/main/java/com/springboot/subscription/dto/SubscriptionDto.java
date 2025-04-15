@@ -1,19 +1,33 @@
 package com.springboot.subscription.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class SubscriptionDto {
+    @Getter
     public static class Post{
-        long platformId;
-        long subsPlanId;
+        private long platformId;
+        private long subsPlanId;
         private String billingCycle;
-        private LocalDateTime subscriptionAt;
+        private LocalDate subscriptionAt;
     }
+
+    @Getter
     public static class Patch{
-        long subsPlanId;
+        private long subsPlanId;
         private String billingCycle;
         private LocalDateTime subscriptionAt;
     }
+
+    @AllArgsConstructor
+    @Getter
+    @Builder
+    @NoArgsConstructor
     public static class Response{
         private String platformName;
         private String platformImage;
@@ -24,6 +38,5 @@ public class SubscriptionDto {
         private int price;
         private int totalPrice;
         private String billingCycle;
-
     }
 }
