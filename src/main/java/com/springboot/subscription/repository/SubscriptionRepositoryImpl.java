@@ -16,6 +16,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
     @Override
     public boolean existsSubsStatusByMemberAndPlatform(Long memberId, Long platformId) {
         Integer fetchOne = queryFactory
+                //select 1과 같은것으로 주어진 테이블의 각 행에 대해 숫자1를 반환한다.
                 .selectOne()
                 .from(subs)
                 .where(

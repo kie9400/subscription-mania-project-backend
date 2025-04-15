@@ -7,4 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface SubscriptionMapper {
     Subscription subsPostDtoToSubs(SubscriptionDto.Post requestBody);
+    Subscription subsPatchDtoToSubs(SubscriptionDto.Patch requestBody);
 }
