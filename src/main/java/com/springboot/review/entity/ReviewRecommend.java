@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"review_id", "member_id"}))
 public class ReviewRecommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
