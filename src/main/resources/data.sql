@@ -85,3 +85,36 @@ INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
 ('광고형 스탠다드', 5500, 1),
 ('스탠다드', 13500, 1),
 ('프리미엄', 17000, 1);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('일반', 14900, 2),
+('IOS', 19500, 2),
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('스탠다드', 9900, 3),
+('프리미엄', 13900, 3);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('베이직', 7900, 4),
+('스탠다드', 10900, 4),
+('프리미엄', 13900, 4);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('베이직', 7900, 5),
+('스탠다드', 10900, 5),
+('프리미엄', 13900, 5);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('일반', 7890, 6);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('베이직', 9900, 7),
+('프리미엄', 14900, 7),
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('베이직', 7900, 8),
+('프리미엄', 12900, 8);
+
+INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
+('PC Game Pass', 9500, 29),
+('Xbox Game Pass Ultimate', 16000, 29);
