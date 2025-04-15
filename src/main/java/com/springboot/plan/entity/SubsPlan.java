@@ -1,5 +1,6 @@
-package com.springboot.platform.entity;
+package com.springboot.plan.entity;
 
+import com.springboot.platform.entity.Platform;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

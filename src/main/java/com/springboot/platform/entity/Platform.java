@@ -1,6 +1,7 @@
 package com.springboot.platform.entity;
 
 import com.springboot.category.entity.Category;
+import com.springboot.plan.entity.SubsPlan;
 import com.springboot.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

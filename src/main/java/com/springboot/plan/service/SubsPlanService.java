@@ -1,9 +1,9 @@
-package com.springboot.platform.service;
+package com.springboot.plan.service;
 
 import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
-import com.springboot.platform.entity.SubsPlan;
-import com.springboot.platform.repository.SubsPlanRepository;
+import com.springboot.plan.entity.SubsPlan;
+import com.springboot.plan.repository.SubsPlanRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
