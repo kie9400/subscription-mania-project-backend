@@ -17,6 +17,7 @@ public interface ReviewMapper {
                 .reviewId(review.getReviewId())
                 .content(review.getContent())
                 .createdAt(review.getCreatedAt())
+                .recommendCount(review.getRecommendCount())
                 .memberId(review.getMember().getMemberId())
                 .memberName(review.getMember().getName())
                 .rating(review.getRating());
