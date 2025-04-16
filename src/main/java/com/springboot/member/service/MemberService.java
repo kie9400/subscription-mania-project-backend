@@ -40,6 +40,8 @@ public class MemberService {
     //이메일 전송 메서드
     public void sendCode(MemberDto.EmailRequest emailRequest) {
         String email = emailRequest.getEmail();
+        //이미 회원가입된 이메일인지 검증
+        verifyExistsEmail(email);
 
         String code = createCode();
         try {

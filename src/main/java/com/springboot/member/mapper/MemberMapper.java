@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MemberMapper {
     Member memberPostToMember(MemberDto.Post requestBody);
+    Member memberPatchToMember(MemberDto.Patch requestBody);
     MemberDto.MyPageResponse memberToMyPage(Member member);
     MemberDto.MyInfoResponse memberToMyInfo(Member member);
     Member findIdDtoToMember(MemberDto.FindId requestBody);

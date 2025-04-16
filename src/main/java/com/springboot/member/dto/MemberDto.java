@@ -14,7 +14,7 @@ public class MemberDto {
     @Getter
     public static class EmailRequest{
         @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
-        @Email
+        @Email(message = "이메일 형식을 잘못 입력했습니다.")
         @Schema(description = "사용자 이메일", example = "example@gmail.com")
         private String email;
     }

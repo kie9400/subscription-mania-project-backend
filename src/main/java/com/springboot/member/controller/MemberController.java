@@ -39,7 +39,9 @@ public class MemberController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "이메일 전송 성공"),
             @ApiResponse(responseCode = "400", description = "전송 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"이메일 전송이 실패했습니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"이메일 전송이 실패했습니다.\"}"))),
+            @ApiResponse(responseCode = "409", description = "해당 이메일이 이미 존재합니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 이메일이 이미 존재합니다.\"}")))
     })
     @PostMapping("/sendEmail")
     public ResponseEntity sendEmail(@RequestBody MemberDto.EmailRequest requestDto) {
