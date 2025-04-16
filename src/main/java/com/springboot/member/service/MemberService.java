@@ -11,6 +11,7 @@ import com.springboot.member.entity.Member;
 import com.springboot.member.repository.MemberRepository;
 import com.springboot.redis.RedisService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class MemberService {
     private final MailService mailService;
     private final RedisService redisService;
     private final StorageService storageService;
+
+    @Value("${file.default-image}")
+    private String defaultImagePath;
 
     //이메일 전송 메서드
     public void sendCode(MemberDto.EmailRequest emailRequest) {
@@ -70,6 +74,7 @@ public class MemberService {
 
         List<String> roles = authorityUtils.createAuthorities(member.getEmail());
         member.setRoles(roles);
+        member.setImage(defaultImagePath);
 
         return memberRepository.save(member);
     }
@@ -140,7 +145,11 @@ public class MemberService {
         if (multipartFile != null && !multipartFile.isEmpty()){
             // 프로필 이미지 덮어쓰기 되도록 구현
             String pathWithoutExt = "members/" + findMember.getMemberId() + "/profile";
-            String relativePath =
+            String relativePath = storageService.store(multipartFile, pathWithoutExt);
+            String imageUrl = "/images/" + relativePath;
+            findMember.setImage(imageUrl);
+        } else {
+            findMember.setImage(defaultImagePath);
         }
     }
 }
