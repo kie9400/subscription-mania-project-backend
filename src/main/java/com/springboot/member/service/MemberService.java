@@ -100,6 +100,23 @@ public class MemberService {
         return memberRepository.save(findMember);
     }
 
+    public void updatePassword(MemberDto.PatchPassword dto, long memberId){
+        Member findMember = findVerifiedMember(memberId);
+        //기존 비밀번호랑 해당 회원의 DB 비밀번호가 같은지 비교
+        if(!passwordEncoder.matches(dto.getCurrentPassword(), findMember.getPassword())){
+            throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCHED);
+        }
+
+        if(!passwordEncoder.matches(dto.getNewPassword(), findMember.getPassword())){
+            throw new BusinessLogicException(ExceptionCode.PASSWORD_SAME_AS_OLD);
+        }
+
+        //새로운 비밀번호로 수정
+        String encoded = passwordEncoder.encode(dto.getNewPassword());
+        findMember.setPassword(encoded);
+        memberRepository.save(findMember);
+    }
+
     public void myDeleteMember(Member member, Long memberId){
         Member findMember = findVerifiedMember(memberId);
 
@@ -118,7 +135,7 @@ public class MemberService {
     //아이디를 찾기위한 메서드
     @Transactional(readOnly = true)
     public Member findMemberEmail(Member member){
-        return memberRepository.findByNameAndPhoneNumber(member.getName(), member.getPhoneNumber())
+        return memberRepository.findByPhoneNumber(member.getPhoneNumber())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
@@ -129,6 +146,15 @@ public class MemberService {
 
         if (member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    // 닉네임 중복 확인 메서드
+    @Transactional(readOnly = true)
+    public void verifyExistsName(String name){
+        Optional<Member> member = memberRepository.findByName(name);
+
+        if (member.isPresent())
+            throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
     }
 
     // 휴대폰 번호 중복 확인 메서드
