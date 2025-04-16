@@ -4,10 +4,7 @@ import com.springboot.member.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public class MemberDto {
@@ -48,7 +45,8 @@ public class MemberDto {
         private Member.Gender gender;
 
         @Schema(description = "사용자 나이", example = "25")
-        @Size(min = 15, max = 120)
+        @Min(15)
+        @Max(120)
         private int age;
 
         @NotBlank(message = "닉네임은 공백이 아니어야 합니다.")
