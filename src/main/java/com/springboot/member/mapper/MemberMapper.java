@@ -22,6 +22,8 @@ public interface MemberMapper {
     MemberDto.FindIdResponse memberToFindId(Member member);
     Member memberDeleteToMember(MemberDto.Delete requestBody);
 
+    MemberDto.ReviewsResponse memberToMyReviews(Member member);
+
     default MySubsResponseDto memberToMySubsResponse(List<Subscription> subscriptions){
         //groupingBy()로 카테고리 이름 기준으로 묶음
         //groupingBy()는 자바 Stram API에서 지원하는 메서드, 컬렉션 요소들을 특정 기준(key)로 묶어 Map으로 반환해주는 함수

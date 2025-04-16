@@ -36,7 +36,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    @Scheduled(cron = "0 * * * * *") // 매 분 실행 (테스트용)
+    @Scheduled(cron = "0 0 0 * * *")
     public void sendScheduledNotifications() {
         LocalDate today = LocalDate.now();
 
