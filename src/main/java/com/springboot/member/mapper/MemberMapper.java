@@ -3,8 +3,10 @@ package com.springboot.member.mapper;
 import com.springboot.member.dto.MemberDto;
 import com.springboot.member.dto.MySubsResponseDto;
 import com.springboot.member.entity.Member;
+import com.springboot.review.entity.Review;
 import com.springboot.subscription.entity.Subscription;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.ArrayList;
@@ -21,8 +23,14 @@ public interface MemberMapper {
     Member findIdDtoToMember(MemberDto.FindId requestBody);
     MemberDto.FindIdResponse memberToFindId(Member member);
     Member memberDeleteToMember(MemberDto.Delete requestBody);
+    List<MemberDto.ReviewsResponse> reviewToMyReviews(List<Review>reviews);
 
-    MemberDto.ReviewsResponse memberToMyReviews(Member member);
+    @Mapping(target = "reviewId", source = "reviewId")
+    @Mapping(target = "platformImage", source = "platform.platformImage")
+    @Mapping(target = "platformName", source = "platform.platformName")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "rating", source = "rating")
+    MemberDto.ReviewsResponse reviewToMyReview(Review review);
 
     default MySubsResponseDto memberToMySubsResponse(List<Subscription> subscriptions){
         //groupingBy()로 카테고리 이름 기준으로 묶음
