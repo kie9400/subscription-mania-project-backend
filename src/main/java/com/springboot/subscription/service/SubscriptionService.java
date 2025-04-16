@@ -104,6 +104,7 @@ public class SubscriptionService {
     }
 
     //구독이 존재하는지 검증하는 메서드
+    @Transactional(readOnly = true)
     public Subscription findVerifiedSubs(long subscriptionId){
         Optional<Subscription> optionalSubscription = subscriptionRepository.findById(subscriptionId);
         Subscription subscription = optionalSubscription.orElseThrow(
@@ -118,8 +119,8 @@ public class SubscriptionService {
     }
 
     // 사용자가 카테고리별로 구독내역을 조회하기 위한 메서드
+    @Transactional(readOnly = true)
     public List<Subscription> findSubscriptionsWithPlanAndPlatform(Long memberId) {
         return subscriptionRepository.findAllByMemberIdWithPlatformAndPlan(memberId);
     }
-
 }
