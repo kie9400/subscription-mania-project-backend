@@ -16,5 +16,8 @@ public interface ReviewRepositoryCustom {
 
     //해당 플랫폼의 삭제된 리뷰를 제외한 모든 리뷰를 조회
     Page<Review> findActiveReviewsByPlatform(Platform platform, Pageable pageable);
+
+    //해당 멤버의 삭제된 리뷰를 제외한 모든 리뷰를 조회
+    Page<Review> findActiveReviewsAndMember(Member member, Pageable pageable);
 }
 

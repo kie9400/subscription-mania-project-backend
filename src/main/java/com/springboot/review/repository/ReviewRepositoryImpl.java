@@ -60,16 +60,6 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
 
         return fetchOne != null;
     }
-//    public String findReviewStatusByMemberAndPlatform(long memberId, long platformId) {
-//        return queryFactory
-//                .select(review.reviewStatus.stringValue())
-//                .from(review)
-//                .where(
-//                        review.member.memberId.eq(memberId),
-//                        review.platform.platformId.eq(platformId)
-//                )
-//                .fetchFirst();
-//    }
 
     @Override
     public Page<Review> findActiveReviewsByPlatform(Platform platform, Pageable pageable) {
@@ -100,6 +90,31 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 )
                 .fetchOne();
 
+        return new PageImpl<>(content, pageable, total != null ? total : 0);
+    }
+
+    @Override
+    public Page<Review> findActiveReviewsAndMember(Member member, Pageable pageable) {
+        List<Review> content = queryFactory
+                .selectFrom(review)
+                .where(
+                        review.member.eq(member),
+                        review.reviewStatus.ne(Review.ReviewStatus.REVIEW_DELETE)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(review.createdAt.desc())
+                .fetch();
+
+        // 리뷰의 총 개수
+        Long total = queryFactory
+                .select(review.count())
+                .from(review)
+                .where(
+                        review.member.eq(member),
+                        review.reviewStatus.ne(Review.ReviewStatus.REVIEW_DELETE)
+                )
+                .fetchOne();
         return new PageImpl<>(content, pageable, total != null ? total : 0);
     }
 }
