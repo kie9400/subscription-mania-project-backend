@@ -66,6 +66,18 @@ public class MemberDto {
         private String phoneNumber;
     }
 
+    @Getter
+    public static class Delete{
+        @Schema(description = "사용자 이메일", example = "example@gmail.com")
+        @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
+        @Email
+        private String email;
+
+        @NotBlank
+        @Schema(description = "사용자 비밀번호", example = "password123!@")
+        private String password;
+    }
+
     @AllArgsConstructor
     @Getter
     @Setter

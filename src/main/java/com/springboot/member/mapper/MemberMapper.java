@@ -19,6 +19,7 @@ public interface MemberMapper {
     MemberDto.MyInfoResponse memberToMyInfo(Member member);
     Member findIdDtoToMember(MemberDto.FindId requestBody);
     MemberDto.FindIdResponse memberToFindId(Member member);
+    Member memberDeleteToMember(MemberDto.Delete requestBody);
 
     default MySubsResponseDto memberToMySubsResponse(List<Subscription> subscriptions){
         //groupingBy()로 카테고리 이름 기준으로 묶음

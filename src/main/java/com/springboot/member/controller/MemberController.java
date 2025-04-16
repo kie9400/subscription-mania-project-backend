@@ -10,6 +10,8 @@ import com.springboot.subscription.entity.Subscription;
 import com.springboot.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +35,24 @@ public class MemberController {
     private final MailService mailService;
     private final MemberMapper mapper;
 
+    @Operation(summary = "이메일 인증코드 전송", description = "이메일로 인증코드를 전송합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일 전송 성공"),
+            @ApiResponse(responseCode = "400", description = "전송 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"이메일 전송이 실패했습니다.\"}")))
+    })
     @PostMapping("/sendEmail")
     public ResponseEntity sendEmail(@RequestBody MemberDto.EmailRequest requestDto) {
         memberService.sendCode(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body("인증 코드가 전송되었습니다.");
     }
 
+    @Operation(summary = "이메일 인증코드 비교", description = "전송한 인증코드를 알맞게 입력했는지 검증합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "인증 완료"),
+            @ApiResponse(responseCode = "400", description = "인증 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"인증코드가 틀렸습니다.\"}")))
+    })
     @PostMapping("/verifyCode")
     public ResponseEntity verifyCode(@Valid @RequestBody MemberDto.VerifyCodeRequest reqeustDto) {
         memberService.verifyCode(reqeustDto);
@@ -73,5 +87,20 @@ public class MemberController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+
+    @Operation(summary = "회원 탈퇴(자신)", description = "자신(회원)이 탈퇴 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "회원 삭제 완료"),
+            @ApiResponse(responseCode = "404", description = "Member not found")
+    })
+    @DeleteMapping
+    public ResponseEntity myDeleteMember(@Valid @RequestBody MemberDto.Delete memberDeleteDto,
+                                         @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember) {
+        Member member = mapper.memberDeleteToMember(memberDeleteDto);
+        memberService.myDeleteMember(member, authenticatedmember.getMemberId());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
 
