@@ -123,4 +123,9 @@ public class SubscriptionService {
     public List<Subscription> findSubscriptionsWithPlanAndPlatform(Long memberId) {
         return subscriptionRepository.findAllByMemberIdWithPlatformAndPlan(memberId);
     }
+
+    @Transactional(readOnly = true)
+    public boolean findSubsWithMemberAndPlatform(Long memberId, Long platformId){
+        return subscriptionRepository.existsActiveSubscriptionByPlatform(memberId, platformId);
+    }
 }

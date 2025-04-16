@@ -17,6 +17,8 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
     }
 
     QSubscription subs = QSubscription.subscription;
+    QSubsPlan plan = QSubsPlan.subsPlan;
+    QPlatform platform = QPlatform.platform;
 
     @Override
     public boolean existsSubsStatusByMemberAndPlatform(Long memberId, Long platformId) {
@@ -51,8 +53,6 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
 
     @Override
     public List<Subscription> findAllByMemberIdWithPlatformAndPlan(Long memberId) {
-        QSubsPlan plan = QSubsPlan.subsPlan;
-        QPlatform platform = QPlatform.platform;
         QCategory category = QCategory.category;
 
         return queryFactory.selectFrom(subs)
@@ -61,5 +61,22 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
                 .join(platform.category, category).fetchJoin()
                 .where(subs.member.memberId.eq(memberId))
                 .fetch();
+    }
+
+    @Override
+    public boolean existsActiveSubscriptionByPlatform(Long memberId, Long platformId) {
+        Integer result = queryFactory
+                .selectOne()
+                .from(subs)
+                .join(subs.subsPlan, plan)
+                .join(plan.platform, platform)
+                .where(
+                        subs.member.memberId.eq(memberId),
+                        platform.platformId.eq(platformId),
+                        subs.subsStatus.eq(Subscription.SubsStatus.SUBSCRIBE_ACTIVE)
+                )
+                .fetchFirst();
+
+        return result != null;
     }
 }
