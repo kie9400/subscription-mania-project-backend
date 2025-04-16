@@ -92,6 +92,7 @@ public class MemberService {
 
     public Member updateMember(Member member, Long memberId, MultipartFile profileImage){
         Member findMember = findVerifiedMember(memberId);
+        validateQuitMember(findMember);
 
         Optional.ofNullable(member.getName())
                 .ifPresent(findMember::setName);
@@ -123,8 +124,10 @@ public class MemberService {
         memberRepository.save(findMember);
     }
 
+    //자기 자신을 탈퇴시키는 메서드(본인)
     public void myDeleteMember(Member member, Long memberId){
         Member findMember = findVerifiedMember(memberId);
+        validateQuitMember(findMember);
 
         if(!member.getEmail().equals(findMember.getEmail())){
             throw new BusinessLogicException(ExceptionCode.INVALID_CREDENTIALS);
@@ -136,6 +139,13 @@ public class MemberService {
 
         findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(findMember);
+    }
+
+    //탈퇴된 회원인지 검증하는 메서드 (탈퇴된 회원이면 예외처리)
+    public void validateQuitMember(Member member){
+        if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_DELETE);
+        }
     }
 
     //아이디를 찾기위한 메서드
