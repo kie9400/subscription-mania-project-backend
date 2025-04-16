@@ -104,5 +104,20 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "비밀번호 변경", description = "비밀번호를 변경 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 변경 완료"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "400", description = "비밀번호 유효성 검증 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"비밀번호 유효성 검증 실패\"}")))
+    })
+    @PatchMapping("/password")
+    public ResponseEntity patchMember(@RequestBody @Valid MemberDto.PatchPassword passwordDto,
+                                      @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember){
+
+        memberService.updatePassword(passwordDto, authenticatedmember.getMemberId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 
