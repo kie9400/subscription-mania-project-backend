@@ -79,6 +79,10 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public Member updateMember(Member member){
+
+    }
+
     public void myDeleteMember(Member member, long memberId){
         Member findMember = findVerifiedMember(memberId);
 
@@ -95,12 +99,14 @@ public class MemberService {
     }
 
     //아이디를 찾기위한 메서드
+    @Transactional(readOnly = true)
     public Member findMemberEmail(Member member){
         return memberRepository.findByNameAndPhoneNumber(member.getName(), member.getPhoneNumber())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     //이메일 중복 확인 메서드
+    @Transactional(readOnly = true)
     public void verifyExistsEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
 
@@ -109,6 +115,7 @@ public class MemberService {
     }
 
     // 휴대폰 번호 중복 확인 메서드
+    @Transactional(readOnly = true)
     public void verifyExistsPhoneNumber(String phoneNumber){
         Optional<Member> member = memberRepository.findByPhoneNumber(phoneNumber);
 
@@ -117,6 +124,7 @@ public class MemberService {
     }
 
     //사용자가 존재하는지 확인하는 메서드
+    @Transactional(readOnly = true)
     public Member findVerifiedMember(long memberId){
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member member = optionalMember.orElseThrow(()->
