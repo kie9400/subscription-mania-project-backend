@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 예정 알림</title>
+</head>
+<body>
+<h2>다음 결제일 알림 📅</h2>
+<p>안녕하세요, 구독 중인 <strong th:text="${platform}">플랫폼</strong>의 결제일이 3일 남았습니다.</p>
+<p>결제 예정일: <strong th:text="${nextPaymentDate}">2025-05-15</strong></p>
+<p>불필요한 결제를 방지하려면 해지 여부를 꼭 확인해 주세요 🙌</p>
+</body>
+</html>
