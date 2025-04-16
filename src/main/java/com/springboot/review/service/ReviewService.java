@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +86,13 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(page, size);
 
         return reviewRepository.findActiveReviewsByPlatform(findPlatform, pageable);
+    }
+
+    public Page<Review> findMyReviews(int page, int size, Long memberId){
+        Member findMember = memberService.findVerifiedMember(memberId);
+        Pageable pageable = PageRequest.of(page, size);
+
+        return reviewRepository.findActiveReviewsAndMember(findMember, pageable);
     }
 
     public void deleteReview(Long platformId, Long reviewId, Long memberId){
