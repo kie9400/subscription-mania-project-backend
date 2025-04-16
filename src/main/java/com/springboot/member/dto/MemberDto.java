@@ -25,7 +25,7 @@ public class MemberDto {
 
         @Pattern(regexp = "^\\d{6}$", message = "6자리 숫자여야 합니다.")
         @Schema(description = "6자리 인증 코드", example = "123456")
-        private int code;
+        private String code;
     }
 
     @Getter

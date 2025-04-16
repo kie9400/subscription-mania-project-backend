@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisService {
     private final RedisTemplate<String, String> redisTemplate;
 
-    // 이메일 인증 코드 전송 메서드
+    // 이메일 인증 코드 저장 메서드
     public void setCode(String email, String authCode){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         // 유효 시간은 300초로 설정
@@ -22,7 +22,7 @@ public class RedisService {
         valueOperations.set(email, authCode, 300, TimeUnit.SECONDS);
     }
 
-    // 이메일 인증 코드 반환 메서드
+    // 이메일 인증 코드 조회 메서드
     public String getCode(String email) throws BusinessLogicException {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String authCode = (String) valueOperations.get(email);

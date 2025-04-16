@@ -43,7 +43,7 @@ public class MemberController {
             @ApiResponse(responseCode = "409", description = "해당 이메일이 이미 존재합니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 이메일이 이미 존재합니다.\"}")))
     })
-    @PostMapping("/sendEmail")
+    @PostMapping("/send-email")
     public ResponseEntity sendEmail(@RequestBody MemberDto.EmailRequest requestDto) {
         memberService.sendCode(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body("인증 코드가 전송되었습니다.");
@@ -55,7 +55,7 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "인증 실패",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"인증코드가 틀렸습니다.\"}")))
     })
-    @PostMapping("/verifyCode")
+    @PostMapping("/verify-code")
     public ResponseEntity verifyCode(@Valid @RequestBody MemberDto.VerifyCodeRequest reqeustDto) {
         memberService.verifyCode(reqeustDto);
         return ResponseEntity.status(HttpStatus.OK).body("인증 완료");
