@@ -43,6 +43,12 @@ public class SubscriptionService {
             throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
         }
 
+        if(subscription.getBillingCycle().equals("1년")){
+            subscription.setNextPaymentDate(subscription.getSubscriptionAt().plusYears(1));
+        }else {
+            subscription.setNextPaymentDate(subscription.getSubscriptionAt().plusMonths(1));
+        }
+
         subscription.setSubsPlan(plan);
         subscription.setMember(member);
         return subscriptionRepository.save(subscription);
@@ -96,6 +102,28 @@ public class SubscriptionService {
         subscriptionRepository.save(subs);
     }
 
+    // 사용자가 카테고리별로 구독내역을 조회하기 위한 메서드
+    @Transactional(readOnly = true)
+    public List<Subscription> findSubscriptionsWithPlanAndPlatform(Long memberId) {
+        return subscriptionRepository.findAllByMemberIdWithPlatformAndPlan(memberId);
+    }
+
+    // 구독 상세 페이지 (구독 단일 내역 조회) 메서드
+    @Transactional(readOnly = true)
+    public Subscription findSubscription(Long subscriptionId, Long memberId){
+        Member member = memberService.findVerifiedMember(memberId);
+        Subscription subs = findVerifiedSubs(subscriptionId);
+
+        isSubsOwner(subs, member.getMemberId());
+
+        if(subs.getSubsStatus().equals(Subscription.SubsStatus.SUBSCRIBE_CANCEL)){
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
+        }
+
+        return subs;
+    }
+
+
     //구독 시작일이 플랫폼 서비스 일자보다 앞서있는지 검증
     public void validateSubsStartDate(Platform platform, Subscription subscription){
         if(subscription.getSubscriptionAt().isBefore(platform.getServiceAt())){
@@ -116,12 +144,6 @@ public class SubscriptionService {
     //이 구독을 등록한 구독자(사용자)가 맞는지 검증
     public void isSubsOwner(Subscription subscription, long memberId){
         memberService.isAuthenticatedMember(subscription.getMember().getMemberId(), memberId);
-    }
-
-    // 사용자가 카테고리별로 구독내역을 조회하기 위한 메서드
-    @Transactional(readOnly = true)
-    public List<Subscription> findSubscriptionsWithPlanAndPlatform(Long memberId) {
-        return subscriptionRepository.findAllByMemberIdWithPlatformAndPlan(memberId);
     }
 
     @Transactional(readOnly = true)

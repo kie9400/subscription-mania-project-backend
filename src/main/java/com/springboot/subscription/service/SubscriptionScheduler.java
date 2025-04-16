@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class SubscriptionScheduler {
     private final SubscriptionRepository subscriptionRepository;
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정
     public void updateNextPaymentDates() {
         LocalDate today = LocalDate.now();
 
