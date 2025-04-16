@@ -84,11 +84,23 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public Member updateMember(Member member){
+    public Member updateMember(Member member, Long memberId){
+        Member findMember = findVerifiedMember(member.getMemberId());
+        isAuthenticatedMember(findMember.getMemberId(), memberId);
 
+        Optional.ofNullable(member.getImage())
+                .ifPresent(findMember::setImage);
+        Optional.ofNullable(member.getName())
+                .ifPresent(findMember::setName);
+        Optional.ofNullable(member.getGender())
+                .ifPresent(findMember::setGender);
+        Optional.of(member.getAge())
+                .ifPresent(findMember::setAge);
+
+        return memberRepository.save(findMember);
     }
 
-    public void myDeleteMember(Member member, long memberId){
+    public void myDeleteMember(Member member, Long memberId){
         Member findMember = findVerifiedMember(memberId);
 
         if(!member.getEmail().equals(findMember.getEmail())){
