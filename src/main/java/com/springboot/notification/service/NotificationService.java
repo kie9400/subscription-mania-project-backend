@@ -35,4 +35,25 @@ public class NotificationService {
 
         notificationRepository.save(notification);
     }
+
+    @Scheduled(cron = "0 * * * * *") // 매 분 실행 (테스트용)
+    public void sendScheduledNotifications() {
+        LocalDate today = LocalDate.now();
+
+        List<Notification> notifications = notificationRepository.findByScheduledAtBeforeAndIsSentFalse(today);
+
+        for (Notification noti : notifications) {
+            try {
+                Subscription sub = noti.getSubscription();
+                String email = sub.getMember().getEmail();
+
+                mailService.sendReminderEmail(email, sub);
+                noti.setSent(true);
+            } catch (Exception e) {
+                // 실패한 건 isSent 그대로 false 유지
+            }
+        }
+
+        notificationRepository.saveAll(notifications);
+    }
 }

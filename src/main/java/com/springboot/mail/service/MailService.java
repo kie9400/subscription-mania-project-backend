@@ -4,6 +4,8 @@ import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import com.springboot.subscription.entity.Subscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -43,5 +46,17 @@ public class MailService {
         } catch (RuntimeException e) {
             throw new BusinessLogicException(ExceptionCode.SEND_MAIL_FAILED);
         }
+    }
+
+    // 결제일 알람
+    public void sendReminderEmail(String email, Subscription subscription) throws MessagingException {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("platform", subscription.getSubsPlan().getPlatform().getPlatformName());
+        variables.put("nextPaymentDate", subscription.getNextPaymentDate());
+
+        String subject = "[구독매니아] 다음 구독 결제일이 다가오고 있어요!";
+        String templateName = "reminder"; // reminder.html 템플릿 사용
+
+        sendTemplateEmail(email, templateName, subject, variables);
     }
 }
