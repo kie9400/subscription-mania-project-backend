@@ -67,8 +67,12 @@ public class MemberController {
     @Operation(summary = "회원 가입", description = "회원 가입을 진행합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원 등록 완료"),
-            @ApiResponse(responseCode = "404", description = "존재하지 않은 이메일입니다."),
-            @ApiResponse(responseCode = "409", description = "이미 가입한 회원입니다.")
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "400", description = "회원가입 유효성 검증 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"회원가입 유효성 검증 실패\"}"))),
+            @ApiResponse(responseCode = "409", description = "이미 가입된 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 가입된 회원입니다.\"}")))
     })
     @PostMapping
     public ResponseEntity postMember(@RequestBody @Valid MemberDto.Post memberPostDto) {
@@ -83,7 +87,8 @@ public class MemberController {
     @Operation(summary = "아이디(이메일) 찾기", description = "자신의 아이디(이메일)을 찾습니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "이메일을 찾았습니다."),
-            @ApiResponse(responseCode = "404", description = "Member not found")
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
     })
     @PostMapping("/findId")
     public ResponseEntity findIdGetMember(@Valid @RequestBody MemberDto.FindId findIdDto){
@@ -96,7 +101,10 @@ public class MemberController {
     @Operation(summary = "회원 탈퇴(자신)", description = "자신(회원)이 탈퇴 합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "회원 삭제 완료"),
-            @ApiResponse(responseCode = "404", description = "Member not found")
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "409", description = "이미 탈퇴한 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 탈퇴한 회원입니다.\"}")))
     })
     @DeleteMapping
     public ResponseEntity myDeleteMember(@Valid @RequestBody MemberDto.Delete memberDeleteDto,
@@ -111,9 +119,9 @@ public class MemberController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "비밀번호 변경 완료"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
             @ApiResponse(responseCode = "400", description = "비밀번호 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"비밀번호 유효성 검증 실패\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"비밀번호 유효성 검증 실패\"}")))
     })
     @PatchMapping("/password")
     public ResponseEntity patchMember(@RequestBody @Valid MemberDto.PatchPassword passwordDto,
@@ -123,6 +131,14 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "회원정보 수정", description = "회원 정보를 수정 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 정보 수정 완료"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "400", description = "회원 정보 수정 유효성 검증 실패",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 실패\"}")))
+    })
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity patchMember(@RequestPart("data") @Valid MemberDto.Patch memberPatchDto,
                                       @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember,
