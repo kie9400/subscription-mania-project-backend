@@ -75,6 +75,20 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public void myDeleteMember(Member member, long memberId){
+        Member findMember = findVerifiedMember(memberId);
+
+        if(!member.getEmail().equals(findMember.getEmail())){
+            throw new BusinessLogicException(ExceptionCode.INVALID_CREDENTIALS);
+        }
+
+        if(!passwordEncoder.matches(member.getPassword(), findMember.getPassword())){
+            throw new BusinessLogicException(ExceptionCode.INVALID_CREDENTIALS);
+        }
+
+        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+        memberRepository.save(findMember);
+    }
 
     //아이디를 찾기위한 메서드
     public Member findMemberEmail(Member member){

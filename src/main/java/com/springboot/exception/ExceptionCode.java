@@ -15,6 +15,7 @@ public enum ExceptionCode {
     UNAUTHORIZED_ACCESS(403, "관리자 권한이 없습니다."),
     NOT_FOUND(404, "찾을 수 없습니다."),
     SEARCH_NOT_BLANK(400, "검색창이 비어 있습니다."),
+    INVALID_CREDENTIALS(400,"비밀번호 또는 이메일이 틀렸습니다."),
     ALREADY_EXISTS(409,"이미 존재합니다."),
     ALREADY_DELETED(400,"이미 삭제되었습니다."),
     SEND_MAIL_FAILED(400,"메일 전송에 실패했습니다."),
