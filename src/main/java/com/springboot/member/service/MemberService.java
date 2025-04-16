@@ -70,6 +70,7 @@ public class MemberService {
     public Member createMember(Member member){
         verifyExistsEmail(member.getEmail());
         verifyExistsPhoneNumber(member.getPhoneNumber());
+        verifyExistsName(member.getName());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
@@ -86,18 +87,18 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public Member updateMember(Member member, Long memberId){
-        Member findMember = findVerifiedMember(member.getMemberId());
-        isAuthenticatedMember(findMember.getMemberId(), memberId);
+    public Member updateMember(Member member, Long memberId, MultipartFile profileImage){
+        Member findMember = findVerifiedMember(memberId);
 
-        Optional.ofNullable(member.getImage())
-                .ifPresent(findMember::setImage);
         Optional.ofNullable(member.getName())
                 .ifPresent(findMember::setName);
         Optional.ofNullable(member.getGender())
                 .ifPresent(findMember::setGender);
         Optional.of(member.getAge())
                 .ifPresent(findMember::setAge);
+
+        //이미지 업로드, null이면 변경하지않음
+        uploadImage(findMember, profileImage);
 
         return memberRepository.save(findMember);
     }
@@ -109,7 +110,7 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCHED);
         }
 
-        if(!passwordEncoder.matches(dto.getNewPassword(), findMember.getPassword())){
+        if(dto.getCurrentPassword().equals(dto.getNewPassword())){
             throw new BusinessLogicException(ExceptionCode.PASSWORD_SAME_AS_OLD);
         }
 
@@ -201,8 +202,6 @@ public class MemberService {
             String relativePath = storageService.store(multipartFile, pathWithoutExt);
             String imageUrl = "/images/" + relativePath;
             findMember.setImage(imageUrl);
-        } else {
-            findMember.setImage(defaultImagePath);
         }
     }
 }
