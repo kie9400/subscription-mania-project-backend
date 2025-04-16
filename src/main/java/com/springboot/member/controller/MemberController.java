@@ -16,11 +16,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -115,8 +118,17 @@ public class MemberController {
     @PatchMapping("/password")
     public ResponseEntity patchMember(@RequestBody @Valid MemberDto.PatchPassword passwordDto,
                                       @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember){
-
         memberService.updatePassword(passwordDto, authenticatedmember.getMemberId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity patchMember(@RequestPart("data") @Valid MemberDto.Patch memberPatchDto,
+                                      @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember,
+                                      @RequestPart(required = false) MultipartFile profileImage){
+        Member member = memberService.updateMember(mapper.memberPatchToMember(memberPatchDto), authenticatedmember.getMemberId(), profileImage);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
