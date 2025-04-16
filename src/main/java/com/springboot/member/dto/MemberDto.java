@@ -62,21 +62,18 @@ public class MemberDto {
 
     @Getter
     public static class Patch{
-        @NotBlank(message = "닉네임은 공백이 아니어야 합니다.")
         @Pattern(regexp = "^(?!\\s)(?!.*\\s{2,})(?!.*[~!@#$%^&*()_+=|<>?:{}\\[\\]\"';,.\\\\/`])[^\\s]{1,8}(?<!\\s)$",
                 message = "닉네임은 공백 없이 8자 이내, 특수문자를 포함하지 않아야 합니다.")
         @Schema(description = "사용자 닉네임", example = "홍길동")
         private String name;
 
         @Schema(description = "사용자 나이", example = "25")
-        @Size(min = 15, max = 120)
-        private int age;
+        @Min(15)
+        @Max(120)
+        private Integer age;
 
         @Schema(description = "사용자 성별", example = "MALE")
         private Member.Gender gender;
-
-        @Schema(description = "사용자 프로필 이미지", example = "/images/members/1/profile.png")
-        private String image;
     }
 
     @Setter
