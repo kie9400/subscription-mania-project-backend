@@ -10,6 +10,18 @@ import java.io.IOException;
 
 public class ErrorResponder {
     public static void sendErrorResponse(HttpServletResponse response,
+                                         HttpStatus status,
+                                         String message)throws IOException {
+        Gson gson = new Gson();
+        ErrorResponse errorResponse = ErrorResponse.of(status, message);
+        response.setCharacterEncoding("utf-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status.value());
+        //ErrorReponse 객체를 JSON 포맷 문자열로 변환 후 출력 스트림 생성
+        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
+    }
+
+    public static void sendErrorResponse(HttpServletResponse response,
                                          HttpStatus status)throws IOException {
         Gson gson = new Gson();
         ErrorResponse errorResponse = ErrorResponse.of(status);
