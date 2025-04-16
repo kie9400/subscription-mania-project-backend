@@ -1,5 +1,6 @@
 package com.springboot.subscription.controller;
 
+import com.springboot.dto.SingleResponseDto;
 import com.springboot.member.entity.Member;
 import com.springboot.subscription.dto.SubscriptionDto;
 import com.springboot.subscription.entity.Subscription;
@@ -56,11 +57,20 @@ public class SubscriptionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("{subscription-id}")
+    public ResponseEntity gatSubs(@PathVariable("subscription-id") long subscriptionId,
+                                  @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        Subscription subscription = subscriptionService.findSubscription(subscriptionId, member.getMemberId());
+        SubscriptionDto.Response response = mapper.subsToSubsResponseDto(subscription);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
     @DeleteMapping("{subscription-id}")
-    public ResponseEntity deleteSubs(@PathVariable("subscription-id") long subscritpionId,
+    public ResponseEntity deleteSubs(@PathVariable("subscription-id") long subscriptionId,
                                     @Parameter(hidden = true) @AuthenticationPrincipal Member member){
 
-        subscriptionService.deleteSubs(subscritpionId, member.getMemberId());
+        subscriptionService.deleteSubs(subscriptionId, member.getMemberId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
