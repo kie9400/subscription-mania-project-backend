@@ -37,7 +37,7 @@ public class MypageController {
     })
     @GetMapping()
     public ResponseEntity getMyPage(@Parameter(hidden = true) @AuthenticationPrincipal Member member){
-        Member findMember = memberService.findVerifiedMember(member.getMemberId());
+        Member findMember = memberService.findMember(member.getMemberId());
         MemberDto.MyPageResponse response = mapper.memberToMyPage(findMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
@@ -50,7 +50,7 @@ public class MypageController {
     })
     @GetMapping("/info")
     public ResponseEntity getMyInfo(@Parameter(hidden = true) @AuthenticationPrincipal Member member){
-        Member findMember = memberService.findVerifiedMember(member.getMemberId());
+        Member findMember = memberService.findMember(member.getMemberId());
         MemberDto.MyInfoResponse response = mapper.memberToMyInfo(findMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);

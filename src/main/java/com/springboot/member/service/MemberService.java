@@ -79,6 +79,11 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
+    public Member findMember(Long memberId){
+        return findVerifiedMember(memberId);
+    }
+
     public Member updateMember(Member member){
 
     }
