@@ -12,12 +12,16 @@ import com.springboot.subscription.entity.Subscription;
 import com.springboot.subscription.repository.SubscriptionRepository;
 import com.springboot.plan.entity.SubsPlan;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -27,6 +31,30 @@ public class SubscriptionService {
     private final PlatformService platformService;
     private final SubsPlanService subscriptionService;
     private final NotificationService notificationService;
+
+    //결제일 갱신을 위한 스케줄러 메서드
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 체크
+    public void updateNextPaymentDates() {
+        LocalDate today = LocalDate.now();
+
+        // 오늘 결제일인 구독 내역 조회
+        List<Subscription> dueSubscriptions = subscriptionRepository.findAllByNextPaymentDate(today);
+
+        // 오늘 결제일인 구독 내역을 주기에 맞게 결제일 갱신
+        for (Subscription sub : dueSubscriptions) {
+            if ("1년".equals(sub.getBillingCycle())) {
+                sub.setNextPaymentDate(sub.getNextPaymentDate().plusYears(1));
+            } else {
+                sub.setNextPaymentDate(sub.getNextPaymentDate().plusMonths(1));
+            }
+
+            //갱신일에 맞게 알림도 예약
+            notificationService.scheduleNotification(sub);
+        }
+
+        subscriptionRepository.saveAll(dueSubscriptions);
+        log.info("[스케줄러] {}건의 구독 결제일 갱신 완료", dueSubscriptions.size());
+    }
 
     public Subscription createSubs(Subscription subscription, Long memberId, Long platformId, Long subsPlanId){
         Platform platform =platformService.findVerifiedPlatform(platformId);
@@ -45,13 +73,19 @@ public class SubscriptionService {
             throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
         }
 
-        if(subscription.getBillingCycle().equals("1년")){
-            subscription.setNextPaymentDate(subscription.getSubscriptionAt().plusYears(1));
-        }else {
-            subscription.setNextPaymentDate(subscription.getSubscriptionAt().plusMonths(1));
-        }
+        LocalDate baseDate = subscription.getSubscriptionAt();
+        LocalDate nextPaymentDate = baseDate;
 
-        //구독을 등록할때 그에 맞는 알람도 등록해야 한다.
+        // 현재 날짜보다 뒤에 있는 날짜가 나올 때까지 반복한다
+        // 예를들어 2025년 1월 1일에 구독 시작 했다면 다음 결제일은 5월 1일(today)
+        while (!nextPaymentDate.isAfter(LocalDate.now())) {
+            nextPaymentDate = "1년".equals(subscription.getBillingCycle())
+                    ? nextPaymentDate.plusYears(1)
+                    : nextPaymentDate.plusMonths(1);
+        }
+        subscription.setNextPaymentDate(nextPaymentDate);
+
+        //구독을 등록할때 그에 맞는 결제전 알람도 등록해야 한다.
         notificationService.scheduleNotification(subscription);
 
         subscription.setSubsPlan(plan);
