@@ -1,22 +1,28 @@
 package com.springboot.member.service;
 
+import com.springboot.auth.handler.MemberAuthenticationFailureHandler;
 import com.springboot.auth.utils.AuthorityUtils;
 import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
+import com.springboot.file.StorageService;
 import com.springboot.mail.service.MailService;
 import com.springboot.member.dto.MemberDto;
 import com.springboot.member.entity.Member;
 import com.springboot.member.repository.MemberRepository;
 import com.springboot.redis.RedisService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class MemberService {
@@ -25,14 +31,7 @@ public class MemberService {
     private final AuthorityUtils authorityUtils;
     private final MailService mailService;
     private final RedisService redisService;
-
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, AuthorityUtils authorityUtils, MailService mailService, RedisService redisService) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authorityUtils = authorityUtils;
-        this.mailService = mailService;
-        this.redisService = redisService;
-    }
+    private final StorageService storageService;
 
     //이메일 전송 메서드
     public void sendCode(MemberDto.EmailRequest emailRequest) {
@@ -131,6 +130,17 @@ public class MemberService {
     public void isAuthenticatedMember(long memberId, long authenticationMemberId){
         if(memberId != authenticationMemberId){
             throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
+        }
+    }
+
+    //이미지 등록
+    public void uploadImage(Member member, MultipartFile multipartFile){
+        Member findMember = findVerifiedMember(member.getMemberId());
+
+        if (multipartFile != null && !multipartFile.isEmpty()){
+            // 프로필 이미지 덮어쓰기 되도록 구현
+            String pathWithoutExt = "members/" + findMember.getMemberId() + "/profile";
+            String relativePath =
         }
     }
 }

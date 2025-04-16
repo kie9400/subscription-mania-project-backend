@@ -10,12 +10,14 @@ import com.springboot.plan.service.SubsPlanService;
 import com.springboot.subscription.entity.Subscription;
 import com.springboot.subscription.repository.SubscriptionRepository;
 import com.springboot.plan.entity.SubsPlan;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class SubscriptionService {
@@ -23,13 +25,6 @@ public class SubscriptionService {
     private final MemberService memberService;
     private final PlatformService platformService;
     private final SubsPlanService subscriptionService;
-
-    public SubscriptionService(SubscriptionRepository subscriptionRepository, MemberService memberService, PlatformService platformService, SubsPlanService subscriptionService) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.memberService = memberService;
-        this.platformService = platformService;
-        this.subscriptionService = subscriptionService;
-    }
 
     public Subscription createSubs(Subscription subscription, Long memberId, Long platformId, Long subsPlanId){
         Platform platform =platformService.findVerifiedPlatform(platformId);

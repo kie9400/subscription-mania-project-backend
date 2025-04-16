@@ -10,6 +10,7 @@ import com.springboot.review.entity.Review;
 import com.springboot.review.entity.ReviewRecommend;
 import com.springboot.review.repository.ReviewRecommendRepository;
 import com.springboot.review.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class ReviewService {
@@ -25,13 +27,6 @@ public class ReviewService {
     private final MemberService memberService;
     private final ReviewRecommendRepository reviewRecommendRepository;
     private final PlatformService platformService;
-
-    public ReviewService(ReviewRepository reviewRepository, MemberService memberService, ReviewRecommendRepository reviewRecommendRepository, PlatformService platformService) {
-        this.reviewRepository = reviewRepository;
-        this.memberService = memberService;
-        this.reviewRecommendRepository = reviewRecommendRepository;
-        this.platformService = platformService;
-    }
 
     public Review createReview(Long platformId, Review review, Long memberId){
         Member findMember = memberService.findVerifiedMember(memberId);
