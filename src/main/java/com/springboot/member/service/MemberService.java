@@ -19,9 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -45,7 +43,12 @@ public class MemberService {
 
         String code = createCode();
         try {
-            mailService.sendEmail(email, code);
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("code", code);
+            String subject = "[구독매니아] 이메일 인증 코드";
+            String template = "verify-code";
+
+            mailService.sendTemplateEmail(email, template, subject, variables);
         } catch (MessagingException e) {
             throw new BusinessLogicException(ExceptionCode.SEND_MAIL_FAILED);
         }
