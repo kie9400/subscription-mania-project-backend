@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,7 +25,7 @@ public class Notification {
 
     //알림 전송 시간
     @Column(name = "scheduled_at", nullable = false)
-    private LocalDateTime scheduledAt;
+    private LocalDate scheduledAt;
 
     //알림 생성 시간
     @CreatedDate

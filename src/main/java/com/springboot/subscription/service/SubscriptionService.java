@@ -4,6 +4,7 @@ import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
 import com.springboot.member.entity.Member;
 import com.springboot.member.service.MemberService;
+import com.springboot.notification.service.NotificationService;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.service.PlatformService;
 import com.springboot.plan.service.SubsPlanService;
@@ -25,6 +26,7 @@ public class SubscriptionService {
     private final MemberService memberService;
     private final PlatformService platformService;
     private final SubsPlanService subscriptionService;
+    private final NotificationService notificationService;
 
     public Subscription createSubs(Subscription subscription, Long memberId, Long platformId, Long subsPlanId){
         Platform platform =platformService.findVerifiedPlatform(platformId);
@@ -48,6 +50,9 @@ public class SubscriptionService {
         }else {
             subscription.setNextPaymentDate(subscription.getSubscriptionAt().plusMonths(1));
         }
+
+        //구독을 등록할때 그에 맞는 알람도 등록해야 한다.
+        notificationService.scheduleNotification(subscription);
 
         subscription.setSubsPlan(plan);
         subscription.setMember(member);
@@ -122,7 +127,6 @@ public class SubscriptionService {
 
         return subs;
     }
-
 
     //구독 시작일이 플랫폼 서비스 일자보다 앞서있는지 검증
     public void validateSubsStartDate(Platform platform, Subscription subscription){
