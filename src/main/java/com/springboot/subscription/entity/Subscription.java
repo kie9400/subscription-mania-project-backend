@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,11 +20,17 @@ public class Subscription extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subscriptionId;
 
+    //결제 주기
     @Column(nullable = false)
     private String billingCycle;
 
+    //구독 시작일
     @Column(name = "subscription_at", updatable = false, nullable = false)
     private LocalDate subscriptionAt;
+
+    //다음 결제일
+    @Column(nullable = false)
+    private LocalDate nextPaymentDate;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

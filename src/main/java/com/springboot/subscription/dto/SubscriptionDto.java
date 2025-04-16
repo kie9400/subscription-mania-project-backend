@@ -43,6 +43,7 @@ public class SubscriptionDto {
 
     @AllArgsConstructor
     @Getter
+    @Setter
     @Builder
     @NoArgsConstructor
     public static class Response{
@@ -53,13 +54,13 @@ public class SubscriptionDto {
         private String platformImage;
 
         @Schema(description = "구독 플랜 명", example = "프리미엄")
-        private String SubsPlanName;
+        private String subsPlanName;
 
         @Schema(description = "구독 시작 날짜", example = "2025-04-15")
-        private LocalDateTime subscriptionStartAt;
+        private LocalDate subscriptionStartAt;
 
         @Schema(description = "다음 결제일", example = "2025-05-15")
-        private LocalDateTime nextPaymentDate;
+        private LocalDate nextPaymentDate;
 
         @Schema(description = "요금", example = "12000")
         private int price;
