@@ -10,6 +10,7 @@ import com.springboot.review.entity.Review;
 import com.springboot.review.entity.ReviewRecommend;
 import com.springboot.review.repository.ReviewRecommendRepository;
 import com.springboot.review.repository.ReviewRepository;
+import com.springboot.subscription.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +28,16 @@ public class ReviewService {
     private final MemberService memberService;
     private final ReviewRecommendRepository reviewRecommendRepository;
     private final PlatformService platformService;
+    private final SubscriptionService subscriptionService;
 
     public Review createReview(Long platformId, Review review, Long memberId){
         Member findMember = memberService.findVerifiedMember(memberId);
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
+
+        //회원이 해당 플랫폼 서비스에 구독중인지 검증(구독 내역이 없다면 예외발생)
+        if(!subscriptionService.findSubsWithMemberAndPlatform(findMember.getMemberId(), findPlatform.getPlatformId())){
+            throw new BusinessLogicException(ExceptionCode.PLATFORM_NOT_SUBSCRIPTION);
+        }
 
         //리뷰 등록 중복 방지
         if(reviewRepository.existsReviewPostByMemberAndPlatform(findMember.getMemberId(), findPlatform.getPlatformId())){
@@ -130,7 +137,6 @@ public class ReviewService {
         review.setRecommendCount(count);
         reviewRepository.save(review);
     }
-
 
     //해당 플랫폼에 평균 별점, 리뷰 수 갱신 메서드
     public void updatePlatformReviewStats(Platform platform, Review review){
