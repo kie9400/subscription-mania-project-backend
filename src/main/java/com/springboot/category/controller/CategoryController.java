@@ -6,6 +6,9 @@ import com.springboot.category.mapper.CategoryMapper;
 import com.springboot.category.service.CategoryService;
 import com.springboot.dto.SingleResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,8 +34,11 @@ public class CategoryController {
 
     @Operation(summary = "카테고리 목록 전체 조회", description = "카테고리 목록 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "카테고리 목록 조회 완료"),
-            @ApiResponse(responseCode = "404", description = "category not found"),
+            @ApiResponse(responseCode = "200", description = "카테고리 목록 조회 완료",
+                    content = @Content(
+                            mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryDto.Response.class))
+                    )
+            )
     })
     @GetMapping
     public ResponseEntity getCategories() {
