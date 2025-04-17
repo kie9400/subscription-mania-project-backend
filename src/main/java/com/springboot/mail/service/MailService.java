@@ -15,6 +15,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -49,10 +50,9 @@ public class MailService {
     }
 
     // 결제일 알람
-    public void sendReminderEmail(String email, Subscription subscription) throws MessagingException {
+    public void sendReminderEmail(String email, List<Subscription> subscriptions) throws MessagingException {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("platform", subscription.getSubsPlan().getPlatform().getPlatformName());
-        variables.put("nextPaymentDate", subscription.getNextPaymentDate());
+        variables.put("subscriptions", subscriptions);
 
         String subject = "[구독매니아] 다음 구독 결제일이 다가오고 있어요!";
         String templateName = "reminder"; // reminder.html 템플릿 사용
