@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,12 @@ public class MailService {
         context.setVariables(variables);
 
         String htmlContent = templateEngine.process(templateName, context);
+
+        try {
+            helper.setFrom("server@email.com", "구독매니아");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("보낸 사람 이름 설정 실패", e);
+        }
 
         helper.setTo(email);
         helper.setSubject(subject);
