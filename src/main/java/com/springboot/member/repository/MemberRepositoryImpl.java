@@ -36,7 +36,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .selectFrom(member)
                 .where(
                         //멤버가 활동상태인것만(삭제, 휴면 제외)
-                        member.memberStatus.eq(Member.MemberStatus.MEMBER_ACTIVE)
+                        member.memberStatus.eq(Member.MemberStatus.MEMBER_ACTIVE),
+                        //관리자는 제외
+                        member.roles.contains("ADMIN").not()
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

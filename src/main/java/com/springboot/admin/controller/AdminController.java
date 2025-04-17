@@ -51,9 +51,7 @@ public class AdminController {
     @DeleteMapping("/members/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") long memberId,
                                        @Parameter(hidden = true) @AuthenticationPrincipal Member member) {
-        Member findMember = adminService.adminFindMembers(memberId, member.getMemberId());
-        AdminDto.MemberResponse response = mapper.responseDtoToMember(findMember);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        adminService.deleteMember(memberId, member);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
