@@ -4,6 +4,7 @@ import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
 import com.springboot.member.entity.Member;
 import com.springboot.member.service.MemberService;
+import com.springboot.platform.dto.PlatformDto;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.repository.PlatformRepository;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -70,5 +72,13 @@ public class PlatformService {
     public List<Platform> findPopularPlatformsByAge(Member member) {
         Member findMember = memberService.findVerifiedMember(member.getMemberId());
         return platformRepository.findPopularPlatformsByAge(findMember.getAge(), 8);
+    }
+
+    //플랫폼 별 통계 조회 (나이대별 구독, 성별별 구독)
+    public PlatformDto.PlatformStatisticsResponse getStatistics(Long platformId){
+        Map<Member.Gender, Long> genderStats = platformRepository.countByPlatformSubsByGender(platformId);
+        Map<Integer, Long> ageStats = platformRepository.countByPlatformSubsByAgeGroup(platformId);
+
+        return new PlatformDto.PlatformStatisticsResponse(genderStats, ageStats);
     }
 }
