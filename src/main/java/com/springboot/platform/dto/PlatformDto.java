@@ -71,7 +71,10 @@ public class PlatformDto {
     @Getter
     @AllArgsConstructor
     public static class PlatformStatisticsResponse {
+        @Schema(description = "성별 통계 (예: MALE: 10, FEMALE: 15)")
         private Map<Member.Gender, Long> genderStats;
+
+        @Schema(description = "연령대 통계 (예: 10대: 2, 20대: 15, 30대: 3)")
         private Map<Integer, Long> ageStats;
     }
 }

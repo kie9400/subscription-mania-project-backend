@@ -36,7 +36,9 @@ public class PlatformController {
 
     @Operation(summary = "플랫폼 단일 조회", description = "플랫폼 상세 페이지를 조회 합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "조회 성공"),
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(
+                            value = "{ \"data\": { \"platformId\": 1, \"platformName\": \"넷플릭스\", \"platformImage\": \"/images/platform/netflix.png\", \"platformDescription\": \"다양한 영화와 드라마를 제공하는 OTT 서비스\", \"categoryName\": \"문화\", \"serviceAt\": \"2016-01-07\", \"ratingAvg\": 0, \"reviewCount\": 0, \"plans\": [ { \"subsPlanId\": 1, \"planName\": \"광고형 스탠다드\", \"price\": 5500 }, { \"subsPlanId\": 2, \"planName\": \"스탠다드\", \"price\": 13500 }, { \"subsPlanId\": 3, \"planName\": \"프리미엄\", \"price\": 17000 } ] } }"))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "404", description = "플랫폼을 찾을 수 없습니다.",
@@ -71,6 +73,14 @@ public class PlatformController {
                 new MultiResponseDto<>(mapper.toAllResponseList(platforms), platformPage), HttpStatus.OK);
     }
 
+    @Operation(summary = "플랫폼별 구독 통계 조회", description = "해당 플롯폼의 나이대별, 성별 별 구독 통계를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject
+                            (value = "{ \"data\": { \"genderStats\": { \"MALE\": 15, \"FEMALE\": 12 }, \"ageStats\": { \"10\": 1, \"20\": 6, \"30\": 12, \"40\": 5 } } }"))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
+    })
     @GetMapping("{platform-id}/statistics")
     public ResponseEntity getStatistics(@PathVariable("platform-id") @Positive long platformId){
         PlatformDto.PlatformStatisticsResponse response = platformService.getStatistics(platformId);
