@@ -13,7 +13,13 @@ import com.springboot.platform.dto.PlatformDto;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.mapper.PlatformMapper;
 import com.springboot.platform.service.PlatformService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "메인페이지 API", description = "메인페이지 관련 API")
 @RestController
 @RequiredArgsConstructor
 public class MainController {
@@ -34,6 +41,17 @@ public class MainController {
     private final MainMapper mapper;
 
     //메인 페이지
+
+    @Operation(summary = "메인 페이지 조회", description = "카테고리 목록과 사용자 맞춤/비회원용 추천 플랫폼 목록을 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(
+                            value = "{ \"data\": { \"categories\": [ { \"categoryId\": 1, \"categoryName\": \"문화\", \"categoryImage\": \"/images/category/culture.png\" } ], \"platforms\": [ { \"platformId\": 1, \"platformName\": \"넷플릭스\", \"platformImage\": \"/images/platform/netflix.png\", \"ratingAvg\": 4.5 } ] } }"
+            ))),
+            @ApiResponse(responseCode = "200", description = "비회원인 경우에도 기본 추천 플랫폼이 제공됩니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(
+                            value = "{ \"data\": { \"categories\": [...], \"platforms\": [...] } }")))
+    })
     @GetMapping("/main")
     public ResponseEntity getMainPage(@Parameter(hidden = true) @AuthenticationPrincipal Member member){
         List<Category> categories = categoryService.findCategories();
