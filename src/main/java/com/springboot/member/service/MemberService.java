@@ -12,6 +12,9 @@ import com.springboot.member.repository.MemberRepository;
 import com.springboot.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,6 +127,17 @@ public class MemberService {
         memberRepository.save(findMember);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Member> findMembers(int page, int size, long memberId){
+        //관리자 인지 확인(관리자만 회원 전체를 조회할 수 있어야한다.)
+        if(!isAdmin(memberId)){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ADMIN);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        return memberRepository.findByMemberStatus(pageable);
+    }
+
     //자기 자신을 탈퇴시키는 메서드(본인)
     public void myDeleteMember(Member member, Long memberId){
         Member findMember = findVerifiedMember(memberId);
@@ -136,6 +150,21 @@ public class MemberService {
         if(!passwordEncoder.matches(member.getPassword(), findMember.getPassword())){
             throw new BusinessLogicException(ExceptionCode.INVALID_CREDENTIALS);
         }
+
+        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+        memberRepository.save(findMember);
+    }
+
+    //관리자의 회원탈퇴
+    public void deleteMember(long memberId, Member admin){
+        if(!isAdmin(admin.getMemberId())){
+            throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
+        }
+
+        //탈퇴할 멤버 찾기
+        Member findMember = findVerifiedMember(memberId);
+
+        validateQuitMember(findMember);
 
         findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(findMember);
@@ -216,6 +245,12 @@ public class MemberService {
             String imageUrl = "/images/" + relativePath;
             findMember.setImage(imageUrl);
         }
+    }
+
+    //관리자 여부 확인 메서드
+    public boolean isAdmin(long memberId){
+        Member member = findVerifiedMember(memberId);
+        return member.getRoles().contains("ADMIN");
     }
 }
 

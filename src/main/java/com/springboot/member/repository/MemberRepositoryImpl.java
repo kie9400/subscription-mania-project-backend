@@ -31,7 +31,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public Page<Member> findByMemberStatus(Member.MemberStatus status, Pageable pageable) {
+    public Page<Member> findByMemberStatus(Pageable pageable) {
         List<Member> members = queryFactory
                 .selectFrom(member)
                 .where(
