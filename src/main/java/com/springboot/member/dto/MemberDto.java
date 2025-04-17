@@ -163,14 +163,19 @@ public class MemberDto {
     @NoArgsConstructor
     @Builder
     public static class ReviewsResponse{
+        @Schema(description = "리뷰 ID", example = "1")
         private long reviewId;
 
+        @Schema(description = "플랫폼 이미지", example = "/images/platform/netflix.png")
         private String platformImage;
 
+        @Schema(description = "플랫폼 명", example = "넷플릭스")
         private String platformName;
 
+        @Schema(description = "리뷰 본문", example = "정말 좋은 플랫폼입니다.")
         private String content;
 
+        @Schema(description = "별점", example = "3")
         private int rating;
     }
 }

@@ -1,5 +1,6 @@
 package com.springboot.member.controller;
 
+import com.springboot.category.dto.CategoryDto;
 import com.springboot.dto.SingleResponseDto;
 import com.springboot.mail.service.MailService;
 import com.springboot.member.dto.MemberDto;
@@ -10,10 +11,13 @@ import com.springboot.subscription.entity.Subscription;
 import com.springboot.utils.UriCreator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +32,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "회원 API", description = "회원 관련 API")
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
@@ -86,9 +91,14 @@ public class MemberController {
 
     @Operation(summary = "아이디(이메일) 찾기", description = "자신의 아이디(이메일)을 찾습니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "이메일을 찾았습니다."),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "200", description = "이메일을 찾았습니다.",
+                    content = @Content(
+                            mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MemberDto.FindId.class))
+                    )),
+            @ApiResponse(responseCode = "404", description = "회원을 찾을 수 없습니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"회원을 찾을 수 없습니다.\"}"))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
     @PostMapping("/findId")
     public ResponseEntity findIdGetMember(@Valid @RequestBody MemberDto.FindId findIdDto){
@@ -104,7 +114,9 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
             @ApiResponse(responseCode = "409", description = "이미 탈퇴한 회원입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 탈퇴한 회원입니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 탈퇴한 회원입니다.\"}"))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
     @DeleteMapping
     public ResponseEntity myDeleteMember(@Valid @RequestBody MemberDto.Delete memberDeleteDto,
@@ -121,7 +133,9 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
             @ApiResponse(responseCode = "400", description = "비밀번호 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"비밀번호 유효성 검증 실패\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"비밀번호 유효성 검증 실패\"}"))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
     @PatchMapping("/password")
     public ResponseEntity patchMember(@RequestBody @Valid MemberDto.PatchPassword passwordDto,
@@ -137,7 +151,9 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 회원입니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"존재하지 않는 회원입니다.\"}"))),
             @ApiResponse(responseCode = "400", description = "회원 정보 수정 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 실패\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 실패\"}"))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity patchMember(@RequestPart("data") @Valid MemberDto.Patch memberPatchDto,
