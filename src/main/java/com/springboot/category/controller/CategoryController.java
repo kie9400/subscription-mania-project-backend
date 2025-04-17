@@ -37,7 +37,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity getCategories() {
         List<Category> categories = categoryService.findCategories();
-        List<CategoryDto.ResponseDto> result = mapper.categoryToCategoryResponseDtos(categories);
+        List<CategoryDto.Response> result = mapper.categoryToCategoryResponseDtos(categories);
         return new ResponseEntity(new SingleResponseDto<>(result), HttpStatus.OK);
     }
 }

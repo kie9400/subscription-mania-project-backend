@@ -7,7 +7,7 @@ import lombok.Getter;
 public class CategoryDto {
     @AllArgsConstructor
     @Getter
-    public static class ResponseDto{
+    public static class Response{
         @Schema(description = "카테고리 ID", example = "1")
         private long categoryId;
         @Schema(description = "카테고리 명", example = "문화")
