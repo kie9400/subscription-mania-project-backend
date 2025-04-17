@@ -70,4 +70,11 @@ public class PlatformController {
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.toAllResponseList(platforms), platformPage), HttpStatus.OK);
     }
+
+    @GetMapping("{platform-id}/statistics")
+    public ResponseEntity getStatistics(@PathVariable("platform-id") @Positive long platformId){
+        PlatformDto.PlatformStatisticsResponse response = platformService.getStatistics(platformId);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
 }
