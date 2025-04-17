@@ -12,6 +12,7 @@ import com.springboot.plan.entity.QSubsPlan;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.entity.QPlatform;
 import com.springboot.subscription.entity.QSubscription;
+import com.springboot.subscription.entity.Subscription;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -165,7 +166,11 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
                 )
                 .from(subscription)
                 .join(subscription.member, member)
-                .where(subscription.subsPlan.platform.platformId.eq(platformId))
+                .where(
+                        subscription.subsPlan.platform.platformId.eq(platformId),
+                        member.memberStatus.eq(Member.MemberStatus.MEMBER_ACTIVE),
+                        subscription.subsStatus.eq(Subscription.SubsStatus.SUBSCRIBE_ACTIVE)
+                )
                 .groupBy(Expressions.numberTemplate(Integer.class, "FLOOR({0} / 10) * 10", member.age))
                 .fetch()
                 .stream()
@@ -181,7 +186,11 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
                 .select(member.gender, subscription.count())
                 .from(subscription)
                 .join(subscription.member, member)
-                .where(subscription.subsPlan.platform.platformId.eq(platformId))
+                .where(
+                        subscription.subsPlan.platform.platformId.eq(platformId),
+                        member.memberStatus.eq(Member.MemberStatus.MEMBER_ACTIVE),
+                        subscription.subsStatus.eq(Subscription.SubsStatus.SUBSCRIBE_ACTIVE)
+                )
                 .groupBy(member.gender)
                 .fetch()
                 .stream()
