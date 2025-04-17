@@ -2,6 +2,8 @@ package com.springboot.platform.service;
 
 import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
+import com.springboot.member.entity.Member;
+import com.springboot.member.service.MemberService;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.repository.PlatformRepository;
 import org.springframework.data.domain.Page;
@@ -10,15 +12,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class PlatformService {
     private final PlatformRepository platformRepository;
+    private final MemberService memberService;
 
-    public PlatformService(PlatformRepository platformRepository) {
+    public PlatformService(PlatformRepository platformRepository, MemberService memberService) {
         this.platformRepository = platformRepository;
+        this.memberService = memberService;
     }
 
     @Transactional(readOnly = true)
@@ -54,5 +59,16 @@ public class PlatformService {
         Platform platform = optionalPlatform.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.NOT_FOUND));
         return platform;
+    }
+
+    //평점이 높은 상위 8개 플랫폼 조회하는 메서드
+    public List<Platform> findTopRatedPlatforms() {
+        return platformRepository.findTopRatedPlatforms(8);
+    }
+
+    //나이대 별로 가장 많이 구독한 8개 플랫폼 조회하는 메서드
+    public List<Platform> findPopularPlatformsByAge(Member member) {
+        Member findMember = memberService.findVerifiedMember(member.getMemberId());
+        return platformRepository.findPopularPlatformsByAge(findMember.getAge(), 8);
     }
 }

@@ -6,8 +6,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.springboot.category.entity.QCategory;
+import com.springboot.member.entity.QMember;
+import com.springboot.plan.entity.QSubsPlan;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.entity.QPlatform;
+import com.springboot.subscription.entity.QSubscription;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,9 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
 
     QPlatform platform = QPlatform.platform;
     QCategory category = QCategory.category;
+    QSubscription subscription = QSubscription.subscription;
+    QSubsPlan subsPlan = QSubsPlan.subsPlan;
+    QMember member = QMember.member;
 
     @Override
     public Page<Platform> findByCategoryAndKeywordAndRating(Long categoryId, String keyword, Integer rating, Pageable pageable, String sort) {
@@ -118,5 +124,32 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
             default:
                 return platform.platformId.asc(); // 기본 정렬: 등록순
         }
+    }
+
+    @Override
+    public List<Platform> findTopRatedPlatforms(int limit) {
+        return queryFactory
+                .selectFrom(platform)
+                .orderBy(platform.ratingAvg.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<Platform> findPopularPlatformsByAge(int age, int limit) {
+        int ageGroup = (age / 10) * 10;
+
+        return queryFactory
+                .select(subscription.subsPlan.platform)
+                .from(subscription)
+                .join(subscription.member, member)
+                .where(
+                        //WHERE member.age BETWEEN 20 AND 29와 같음
+                        member.age.between(ageGroup, ageGroup + 9)
+                )
+                .groupBy(subscription.subsPlan.platform)
+                .orderBy(subscription.subsPlan.platform.count().desc())
+                .limit(limit)
+                .fetch();
     }
 }
