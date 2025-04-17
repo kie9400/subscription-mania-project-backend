@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Tag(name = "리뷰 API", description = "리뷰 관련 컨트롤러")
+@Tag(name = "리뷰 API", description = "리뷰 관련 API")
 @RestController
 @RequestMapping("/platforms/{platform-id}/reviews")
 public class ReviewController {

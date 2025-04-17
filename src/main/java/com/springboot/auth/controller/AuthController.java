@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@Tag(name = "공용 컨트롤러", description = "로그인, 로그아웃, 토큰 재발급 컨트롤러")
+@Tag(name = "공용 API", description = "로그인, 로그아웃, 토큰 재발급 API")
 // 로그아웃을 하기 위한 컨트롤러 계층 구현
 @RestController
 @RequestMapping("/auth")

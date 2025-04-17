@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 
-@Tag(name = "구독 API", description = "구독 관련 컨트롤러")
+@Tag(name = "구독 API", description = "구독 관련 API")
 @RestController
 @RequestMapping("/subscription")
 public class SubscriptionController {
