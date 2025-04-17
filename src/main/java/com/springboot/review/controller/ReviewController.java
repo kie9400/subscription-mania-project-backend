@@ -6,10 +6,13 @@ import com.springboot.review.dto.ReviewDto;
 import com.springboot.review.entity.Review;
 import com.springboot.review.mapper.ReviewMapper;
 import com.springboot.review.service.ReviewService;
+import com.springboot.subscription.dto.SubscriptionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +44,9 @@ public class ReviewController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "400", description = "리뷰 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 통과 실패\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 통과 실패\"}"))),
+            @ApiResponse(responseCode = "409", description = "이미 리뷰를 등록하셨습니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 리뷰를 등록하셨습니다.\"}")))
     })
     @PostMapping
     public ResponseEntity postReview(@PathVariable("platform-id") long platformId,
@@ -57,7 +62,10 @@ public class ReviewController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "400", description = "리뷰 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 통과 실패\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 400, \"message\": \"유효성 검증 통과 실패\"}"))),
+            @ApiResponse(responseCode = "409", description = "해당 리뷰는 삭제된 상태입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 리뷰는 삭제된 상태입니다.\"}")))
+
     })
     @PatchMapping("{review-id}")
     public ResponseEntity patchReviews(@PathVariable("platform-id") long platformId,
@@ -74,7 +82,10 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 전체 조회", description = "리뷰를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "리뷰 조회 완료"),
+            @ApiResponse(responseCode = "201", description = "리뷰 조회 완료",
+                    content = @Content(
+                            mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ReviewDto.Response.class))
+                    )),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
@@ -96,7 +107,9 @@ public class ReviewController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "404", description = "해당 리뷰가 존재하지 않습니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}"))),
+            @ApiResponse(responseCode = "409", description = "해당 리뷰는 삭제된 상태입니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 리뷰는 삭제된 상태입니다.\"}")))
     })
     @DeleteMapping("{review-id}")
     public ResponseEntity deleteReview(@PathVariable("platform-id") long platformId,
@@ -112,7 +125,9 @@ public class ReviewController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "404", description = "해당 리뷰가 존재하지 않습니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 리뷰가 존재하지 않습니다.\"}"))),
+            @ApiResponse(responseCode = "409", description = "해당 리뷰에는 이미 추천을 했습니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 리뷰에는 이미 추천을 했습니다.\"}")))
     })
     @PostMapping("{review-id}/recommend")
     public ResponseEntity postRecommend(@PathVariable("platform-id") long platformId,

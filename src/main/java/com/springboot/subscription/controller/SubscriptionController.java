@@ -41,7 +41,7 @@ public class SubscriptionController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
             @ApiResponse(responseCode = "409", description = "이미 구독이 되어 있입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"이미 구독이 되어있습니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"이미 구독이 되어있습니다.\"}")))
     })
     @PostMapping
     public ResponseEntity postSubs(@Valid @RequestBody SubscriptionDto.Post subsPostDto,
@@ -63,7 +63,7 @@ public class SubscriptionController {
             @ApiResponse(responseCode = "404", description = "구독 내역을 찾을 수 없습니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"구독 내역을 찾을 수 없습니다.\"}"))),
             @ApiResponse(responseCode = "409", description = "해당 구독은 취소 상태 입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 구독은 취소 상태 입니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 구독은 취소 상태 입니다.\"}")))
     })
     @PatchMapping("{subscription-id}")
     public ResponseEntity patchSubs(@PathVariable("subscription-id") long subscriptionId,
@@ -105,7 +105,7 @@ public class SubscriptionController {
             @ApiResponse(responseCode = "404", description = "구독 내역을 찾을 수 없습니다.",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"구독 내역을 찾을 수 없습니다.\"}"))),
             @ApiResponse(responseCode = "409", description = "해당 구독은 취소 상태 입니다.",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"해당 구독은 취소 상태 입니다.\"}")))
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 409, \"message\": \"해당 구독은 취소 상태 입니다.\"}")))
     })
     @DeleteMapping("{subscription-id}")
     public ResponseEntity deleteSubs(@PathVariable("subscription-id") long subscriptionId,
