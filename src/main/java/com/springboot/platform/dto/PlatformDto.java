@@ -1,5 +1,6 @@
 package com.springboot.platform.dto;
 
+import com.springboot.member.entity.Member;
 import com.springboot.plan.dto.PlanDto;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class PlatformDto {
     @AllArgsConstructor
@@ -64,5 +66,12 @@ public class PlatformDto {
 
         @Schema(description = "평균 별점", example = "3.5")
         private double ratingAvg;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PlatformStatisticsResponse {
+        private Map<Member.Gender, Long> genderStats;
+        private Map<Integer, Long> ageStats;
     }
 }
