@@ -1,6 +1,7 @@
 package com.springboot.notification.service;
 
 import com.springboot.mail.service.MailService;
+import com.springboot.member.entity.Member;
 import com.springboot.notification.entity.Notification;
 import com.springboot.notification.repository.NotificaitonRepository;
 import com.springboot.subscription.entity.Subscription;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,15 +46,28 @@ public class NotificationService {
 
         List<Notification> notifications = notificationRepository.findByScheduledAtBeforeAndIsSentFalse(today);
 
-        for (Notification noti : notifications) {
-            try {
-                Subscription sub = noti.getSubscription();
-                String email = sub.getMember().getEmail();
+        //사용자 별로 구독내역(List)을 그룹화한다.
+        Map<Member, List<Subscription>> subsGroup = notifications.stream()
+                .collect(Collectors.groupingBy(
+                        //멤버를 기준으로 그룹화
+                        noti -> noti.getSubscription().getMember(),
+                        //각 알림에서 구독만 꺼내어 리스트로 묶는다.
+                        Collectors.mapping(Notification::getSubscription, Collectors.toList())
+                ));
 
-                mailService.sendReminderEmail(email, sub);
-                noti.setSent(true);
+        // 사용자별로 알림 전송
+        for (Map.Entry<Member, List<Subscription>> entry : subsGroup.entrySet()) {
+            Member member = entry.getKey();
+            List<Subscription> subs = entry.getValue();
+
+            try {
+                mailService.sendReminderEmail(member.getEmail(), subs); // 💌 사용자당 1번 발송
+                // 전송 완료한 알림들 모두 true 처리
+                notifications.stream()
+                        .filter(noti -> subs.contains(noti.getSubscription()))
+                        .forEach(noti -> noti.setSent(true));
             } catch (Exception e) {
-                // 실패한 건 isSent 그대로 false 유지
+                // 전송 실패 시 isSent 유지
             }
         }
 
