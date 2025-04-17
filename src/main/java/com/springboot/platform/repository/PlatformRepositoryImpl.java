@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.springboot.category.entity.QCategory;
+import com.springboot.member.entity.Member;
 import com.springboot.member.entity.QMember;
 import com.springboot.plan.entity.QSubsPlan;
 import com.springboot.platform.entity.Platform;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
     private final JPAQueryFactory queryFactory;
@@ -151,5 +154,40 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
                 .orderBy(subscription.subsPlan.platform.count().desc())
                 .limit(limit)
                 .fetch();
+    }
+
+    @Override
+    public Map<Integer, Long> countByPlatformSubsByAgeGroup(Long platformId) {
+        return queryFactory
+                .select(
+                        Expressions.numberTemplate(Integer.class, "FLOOR({0} / 10) * 10", member.age),
+                        subscription.count()
+                )
+                .from(subscription)
+                .join(subscription.member, member)
+                .where(subscription.subsPlan.platform.platformId.eq(platformId))
+                .groupBy(Expressions.numberTemplate(Integer.class, "FLOOR({0} / 10) * 10", member.age))
+                .fetch()
+                .stream()
+                .collect(Collectors.toMap(
+                        tuple -> tuple.get(0, Integer.class),
+                        tuple -> tuple.get(1, Long.class)
+                ));
+    }
+
+    @Override
+    public Map<Member.Gender, Long> countByPlatformSubsByGender(Long platformId) {
+        return queryFactory
+                .select(member.gender, subscription.count())
+                .from(subscription)
+                .join(subscription.member, member)
+                .where(subscription.subsPlan.platform.platformId.eq(platformId))
+                .groupBy(member.gender)
+                .fetch()
+                .stream()
+                .collect(Collectors.toMap(
+                        tuple -> tuple.get(member.gender),
+                        tuple -> tuple.get(subscription.count())
+                ));
     }
 }
