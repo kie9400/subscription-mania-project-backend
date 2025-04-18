@@ -20,10 +20,6 @@ public class Subscription extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subscriptionId;
 
-    //결제 주기
-    @Column(nullable = false)
-    private String billingCycle;
-
     //구독 시작일
     @Column(name = "subscription_at", updatable = false, nullable = false)
     private LocalDate subscriptionAt;

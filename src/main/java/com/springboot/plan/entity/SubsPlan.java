@@ -22,6 +22,10 @@ public class SubsPlan {
     @Column(nullable = false)
     private int price;
 
+    //결제 주기
+    @Column(nullable = false)
+    private String billingCycle;
+
     @ManyToOne
     @JoinColumn(name = "platform_id")
     private Platform platform;
