@@ -42,7 +42,7 @@ public class SubscriptionService {
 
         // 오늘 결제일인 구독 내역을 주기에 맞게 결제일 갱신
         for (Subscription sub : dueSubscriptions) {
-            if ("1년".equals(sub.getBillingCycle())) {
+            if ("연".equals(sub.getSubsPlan().getBillingCycle())) {
                 sub.setNextPaymentDate(sub.getNextPaymentDate().plusYears(1));
             } else {
                 sub.setNextPaymentDate(sub.getNextPaymentDate().plusMonths(1));
@@ -79,7 +79,7 @@ public class SubscriptionService {
         // 현재 날짜보다 뒤에 있는 날짜가 나올 때까지 반복한다
         // 예를들어 2025년 1월 1일에 구독 시작 했다면 다음 결제일은 5월 1일(today)
         while (!nextPaymentDate.isAfter(LocalDate.now())) {
-            nextPaymentDate = "1년".equals(subscription.getBillingCycle())
+            nextPaymentDate = "연".equals(subscription.getSubsPlan().getBillingCycle())
                     ? nextPaymentDate.plusYears(1)
                     : nextPaymentDate.plusMonths(1);
         }
@@ -119,8 +119,6 @@ public class SubscriptionService {
         findSubs.setSubsPlan(plan);
         Optional.ofNullable(subscription.getSubscriptionAt())
                 .ifPresent(subsAt -> findSubs.setSubscriptionAt(subsAt));
-        Optional.ofNullable(subscription.getBillingCycle())
-                .ifPresent(cycle -> findSubs.setBillingCycle(cycle));
 
         validateSubsStartDate(platform, findSubs);
 

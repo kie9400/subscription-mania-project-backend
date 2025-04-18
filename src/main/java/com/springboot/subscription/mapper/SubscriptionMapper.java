@@ -17,6 +17,7 @@ public interface SubscriptionMapper {
     @Mapping(target = "platformName", source = "subsPlan.platform.platformName")
     @Mapping(target = "platformImage", source = "subsPlan.platform.platformImage")
     @Mapping(target = "subsPlanName", source = "subsPlan.planName")
+    @Mapping(target = "billingCycle", source = "subsPlan.billingCycle")
     @Mapping(target = "price", source = "subsPlan.price")
     @Mapping(target = "subscriptionStartAt", source = "subscriptionAt")
     SubscriptionDto.Response subsToSubsResponseDto(Subscription subscription);

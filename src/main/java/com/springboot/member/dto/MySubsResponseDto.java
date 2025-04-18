@@ -38,6 +38,7 @@ public class MySubsResponseDto {
         private String platformImage;
         private String platformName;
         private String planName;
+        private String billingCycle;
         private int price;
     }
 }

@@ -45,6 +45,7 @@ public interface MemberMapper {
                                         .platformName(s.getSubsPlan().getPlatform().getPlatformName())
                                         .planName(s.getSubsPlan().getPlanName())
                                         .price(s.getSubsPlan().getPrice())
+                                        .billingCycle(s.getSubsPlan().getBillingCycle())
                                         .build(),
                                 Collectors.toList())
                 ));
@@ -68,7 +69,14 @@ public interface MemberMapper {
 
             // 카테고리별 총 요금 계산
             int categoryTotalPrice = subsList.stream()
-                    .mapToInt(MySubsResponseDto.SubscriptionInfo::getPrice)
+                    .mapToInt(info ->{
+                        //결제주기가 연이라면 월로 나눠 총요금을 계산한다.
+                        if("연".equals(info.getBillingCycle())){
+                            return info.getPrice() / 12;
+                        }else {
+                            return info.getPrice();
+                        }
+                    })
                     .sum();
 
             // 하나의 카테고리 그룹 ResponseDto 생성

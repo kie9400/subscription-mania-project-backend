@@ -14,9 +14,6 @@ public class SubscriptionDto {
         @Schema(description = "구독 플랜 ID", example = "1")
         private long subsPlanId;
 
-        @Schema(description = "구독 주기", example = "1달")
-        private String billingCycle;
-
         @Schema(description = "구독 시작 날짜", example = "2025-04-15")
         private LocalDate subscriptionAt;
     }
@@ -32,9 +29,6 @@ public class SubscriptionDto {
 
         @Schema(description = "구독 플랜 ID", example = "1")
         private long subsPlanId;
-
-        @Schema(description = "구독 주기", example = "1달")
-        private String billingCycle;
 
         @Schema(description = "구독 시작 날짜", example = "2025-04-15")
         private LocalDate subscriptionAt;
@@ -64,7 +58,7 @@ public class SubscriptionDto {
         @Schema(description = "요금", example = "12000")
         private int price;
 
-        @Schema(description = "구독 주기", example = "1달")
+        @Schema(description = "구독 주기", example = "월")
         private String billingCycle;
     }
 }
