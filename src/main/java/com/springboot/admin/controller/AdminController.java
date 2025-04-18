@@ -70,8 +70,9 @@ public class AdminController {
     @GetMapping("/members")
     public ResponseEntity getMembers(@Positive @RequestParam int page,
                                      @Positive @RequestParam int size,
+                                     @RequestParam(required = false) String keyword,
                                      @Parameter(hidden = true) @AuthenticationPrincipal Member member){
-        Page<Member> memberPage = adminService.findMembers(page - 1 , size, member.getMemberId());
+        Page<Member> memberPage = adminService.findMembers(page - 1 , size, member.getMemberId(), keyword);
         List<Member> members = memberPage.getContent();
 
         return new ResponseEntity<> (new MultiResponseDto<>

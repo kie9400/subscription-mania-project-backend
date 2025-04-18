@@ -30,8 +30,8 @@ public class AdminService {
 
     //전체 회원 목록 조회
     @Transactional(readOnly = true)
-    public Page<Member> findMembers(int page, int size, long memberId){
-        return memberService.findMembers(page, size, memberId);
+    public Page<Member> findMembers(int page, int size, long memberId, String keyword){
+        return memberService.findMembers(page, size, memberId, keyword);
     }
 
     //회원 탈퇴
