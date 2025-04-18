@@ -128,14 +128,18 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Member> findMembers(int page, int size, long memberId){
+    public Page<Member> findMembers(int page, int size, long memberId, String keyword){
         //관리자 인지 확인(관리자만 회원 전체를 조회할 수 있어야한다.)
         if(!isAdmin(memberId)){
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ADMIN);
         }
-
         Pageable pageable = PageRequest.of(page, size);
-        return memberRepository.findByMemberStatus(pageable);
+
+        if(keyword == null){
+            return memberRepository.findByMemberStatus(pageable);
+        }
+
+        return memberRepository.findByNameKeywordAndMemberStatus(pageable, keyword);
     }
 
     //자기 자신을 탈퇴시키는 메서드(본인)
