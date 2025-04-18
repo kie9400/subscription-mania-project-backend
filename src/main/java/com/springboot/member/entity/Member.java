@@ -15,6 +15,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "member", indexes = {
+        @Index(name = "idx_member_email", columnList = "email"),
+        @Index(name = "idx_member_phone", columnList = "phoneNumber")
+})
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
