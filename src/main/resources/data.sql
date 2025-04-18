@@ -81,40 +81,108 @@ INSERT INTO platform (
 VALUES
   (29, 'ChatGPT', '/images/platform/chatgpt.png', 'OpenAI에서 개발한 GPT를 기반으로 하는 대화형 인공지능 서비스', 0, 0, '2023-02-01', 7);
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('광고형 스탠다드', 5500, 1),
-('스탠다드', 13500, 1),
-('프리미엄', 17000, 1);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('광고형 스탠다드', 5500, 1, '월'),
+('스탠다드', 13500, 1, '월'),
+('프리미엄', 17000, 1, '월');
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('일반', 14900, 2),
-('IOS', 19500, 2);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('프리미엄', 14900, 2, '월'),
+('IOS', 19500, 2, '월');
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('스탠다드', 9900, 3),
-('프리미엄', 13900, 3);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('스탠다드', 9900, 3, '월'),
+('프리미엄', 13900, 3, '월');
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('베이직', 7900, 4),
-('스탠다드', 10900, 4),
-('프리미엄', 13900, 4);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('베이직', 7900, 4, '월'),
+('스탠다드', 10900, 4, '월'),
+('프리미엄', 13900, 4, '월');
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('베이직', 7900, 5),
-('스탠다드', 10900, 5),
-('프리미엄', 13900, 5);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('베이직', 7900, 5, '월'),
+('스탠다드', 10900, 5, '월'),
+('프리미엄', 13900, 5, '월');
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('일반', 7890, 6);
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('일반', 7890, 6, '월'),
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('베이직', 9900, 7),
-('프리미엄', 14900, 7);
+('베이직', 9900, 7, '월'),
+('프리미엄', 14900, 7, '월'),
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('베이직', 7900, 8),
-('프리미엄', 12900, 8);
+('베이직', 7900, 8, '월'),
+('프리미엄', 12900, 8, '월'),
 
-INSERT INTO subs_plan (plan_name, price, platform_id) VALUES
-('PC Game Pass', 9500, 28),
-('Xbox Game Pass Ultimate', 16000, 28);
+('PC Game Pass', 9500, 28, '월'),
+('Xbox Game Pass Ultimate', 16000, 28, '월');
+
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('월정액', 4900, 9, '월'),
+
+('전자책', 9900, 10, '월'),
+('전자책', 99000, 10, '연'),
+('밀리 컬렉션', 21900, 10, '월'),
+('밀리 컬렉션', 236500, 10, '연'),
+
+('무제한 이용권', 9900, 11, '월'),
+('무제한 이용권', 78000, 11, '연'),
+
+('스탠다드', 5500, 12, '월'),
+('프리미엄', 7700, 12, '월'),
+('크레마클럽 X FLO', 9900, 12, '월'),
+
+('월 정기 멤버십', 14900, 13, '월');
+
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('월간구독', 19900, 14, '월'),
+('연간구독', 199000, 14, '연'),
+
+('1개월 구독권', 8900, 15, '월'),
+('12개월 구독권', 89000, 15, '연');
+
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('스트리밍 플러스 정기결제', 10900, 16, '월'),
+('HI-FI스트리밍클럽 정기결제', 12000, 16, '월'),
+('스트리밍 클럽 정기결제', 7900, 16, '월'),
+('모바일 스트리밍 클럽 정기결제', 6900, 16, '월'),
+('MP3 10 플러스 정기결제', 14500, 16, '월'),
+('MP3 30 플러스 정기결제', 25900, 16, '월'),
+('MP3 10 정기결제', 6600, 16, '월'),
+('MP3 30 정기결제', 18000, 16, '월'),
+('300회 듣기 정기결제', 4800, 16, '월'),
+
+('데이터 세이프 음악감상', 10900, 17, '월'),
+('음악감상', 8400, 17, '월'),
+('스마트 음악감상', 7400, 17, '월'),
+
+('뮤직 프리미엄', 11990, 18, '월'),
+
+('모바일 무제한 듣기', 7590, 19, '월'),
+('무제한 듣기', 8690, 19, '월'),
+('무제한 듣기 + 오프라인 재생', 11990, 19, '월'),
+
+('개인', 10900, 20, '월'),
+('듀오', 16350, 20, '월'),
+('베이직', 7900, 20, '월');
+
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('쿠팡와우 멤버십', 7890, 21, '월'),
+
+('연회비', 30000, 22, '연'),
+
+('월간', 4900, 23, '월'),
+('연간', 46800, 23, '연'),
+
+('T우주패스 쇼핑 11번가', 9900, 24, '월'),
+('T우주패스 쇼핑 11번가', 99000, 24, '연'),
+
+('일반', 1900, 25, '월');
+
+INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
+('일반', 3990, 26, '월'),
+
+('일반', 9900, 27, '월'),
+('요기패스X', 2900, 27, '월'),
+
+('Plus', 28360, 29, '월'),
+('Pro', 283600, 29, '월');
