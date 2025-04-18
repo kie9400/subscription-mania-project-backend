@@ -40,7 +40,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0/12 * * *")
     public void sendScheduledNotifications() {
         LocalDate today = LocalDate.now();
 
