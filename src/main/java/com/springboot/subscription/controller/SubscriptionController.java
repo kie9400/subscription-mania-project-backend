@@ -7,6 +7,7 @@ import com.springboot.subscription.entity.Subscription;
 import com.springboot.subscription.mapper.SubscriptionMapper;
 import com.springboot.subscription.service.SubscriptionService;
 import com.springboot.utils.UriCreator;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,6 +37,7 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
+    @Operation(summary = "구독 등록", description = "구독을 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "구독 등록 완료"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
@@ -56,6 +58,7 @@ public class SubscriptionController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "구독 내역 수정", description = "구독 내역을 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "구독 수정 완료"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
@@ -79,6 +82,7 @@ public class SubscriptionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "구독 상세 페이지 조회", description = "구독 상세 페이지를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "구독 상세 페이지 조회 완료",
                     content = @Content(
@@ -98,6 +102,7 @@ public class SubscriptionController {
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
+    @Operation(summary = "구독 내역 삭제", description = "구독 내역을 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "구독 삭제 완료"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
