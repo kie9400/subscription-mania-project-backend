@@ -186,3 +186,4 @@ INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
 
 ('Plus', 28360, 29, '월'),
 ('Pro', 283600, 29, '월');
+
