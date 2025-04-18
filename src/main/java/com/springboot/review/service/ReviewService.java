@@ -52,7 +52,7 @@ public class ReviewService {
         //리뷰 개수, 별점 업데이트
         //해당 플랫폼에 리뷰 추가 및 리뷰 개수, 별점 업데이트
         findPlatform.getReviews().add(review);
-        updatePlatformReviewStats(findPlatform, savedReview);
+        updatePlatformReviewStats(findPlatform);
 
         return savedReview;
     }
@@ -68,7 +68,7 @@ public class ReviewService {
         }
 
         //작성자 인지 검증
-        isReviewOwner(findreview, memberId);
+        isReviewOwner(findreview, findMember.getMemberId());
 
         Optional.ofNullable(review.getContent())
                 .ifPresent(content -> findreview.setContent(content));
@@ -81,7 +81,7 @@ public class ReviewService {
     }
 
     public Page<Review> findReviews(int page, int size, Long memberId, Long platformId){
-        Member findMember = memberService.findVerifiedMember(memberId);
+        memberService.findVerifiedMember(memberId);
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
         Pageable pageable = PageRequest.of(page, size);
 
@@ -96,7 +96,7 @@ public class ReviewService {
     }
 
     public void deleteReview(Long platformId, Long reviewId, Long memberId){
-        Member findMember = memberService.findVerifiedMember(memberId);
+        memberService.findVerifiedMember(memberId);
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
         Review review = findVerifiedReview(reviewId);
         isReviewOwner(review, memberId);
@@ -109,7 +109,7 @@ public class ReviewService {
         reviewRepository.save(review);
 
         //리뷰 개수, 별점 업데이트
-        updatePlatformReviewStats(findPlatform, review);
+        updatePlatformReviewStats(findPlatform);
     }
 
     //추천 등록
@@ -147,7 +147,7 @@ public class ReviewService {
     }
 
     //해당 플랫폼에 평균 별점, 리뷰 수 갱신 메서드
-    public void updatePlatformReviewStats(Platform platform, Review review){
+    public void updatePlatformReviewStats(Platform platform){
         Double avgRating = reviewRepository.getAverageRatingByPlatformId(platform.getPlatformId());
         Long reviewCount = reviewRepository.getReviewCountByPlatformId(platform.getPlatformId());
 

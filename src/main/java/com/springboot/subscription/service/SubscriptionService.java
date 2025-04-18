@@ -75,6 +75,7 @@ public class SubscriptionService {
 
         LocalDate baseDate = subscription.getSubscriptionAt();
         LocalDate nextPaymentDate = baseDate;
+        subscription.setSubsPlan(plan);
 
         // 현재 날짜보다 뒤에 있는 날짜가 나올 때까지 반복한다
         // 예를들어 2025년 1월 1일에 구독 시작 했다면 다음 결제일은 5월 1일(today)
@@ -88,7 +89,6 @@ public class SubscriptionService {
         //구독을 등록할때 그에 맞는 결제전 알람도 등록해야 한다.
         notificationService.scheduleNotification(subscription);
 
-        subscription.setSubsPlan(plan);
         subscription.setMember(member);
         return subscriptionRepository.save(subscription);
     }
