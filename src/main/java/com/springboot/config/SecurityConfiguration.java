@@ -31,7 +31,7 @@ import java.util.Arrays;
 //이후 수정이 필요할 수 있다.
 //CrossOrigin은 해당 주소에서 오는 요청만 허용한다.
 @Configuration
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5175")
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
@@ -79,16 +79,11 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // 모든 출처에서 통신 허용
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        // configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://3.39.190.50"));
-        // 지정한 HTTP Method 에 대한 통신 허용
+        // React Vite 주소로 변경
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5175"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        //클라이언트에서 해당 헤더를 사용할 수 있도록 설정한다. ( 설정하지 않으면 아래 헤더만 받음 )
-        //Cache-Control, Content-Language ,Content-Type, Expires, Last-Modified, Pragma
         configuration.setAllowedHeaders(Arrays.asList("RefreshToken", "Authorization", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "RefreshToken"));
         configuration.setAllowCredentials(true);
