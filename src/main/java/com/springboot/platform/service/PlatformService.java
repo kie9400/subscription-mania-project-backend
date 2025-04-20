@@ -63,15 +63,15 @@ public class PlatformService {
         return platform;
     }
 
-    //평점이 높은 상위 8개 플랫폼 조회하는 메서드
+    //평점이 높은 상위 10개 플랫폼 조회하는 메서드
     public List<Platform> findTopRatedPlatforms() {
-        return platformRepository.findTopRatedPlatforms(8);
+        return platformRepository.findTopRatedPlatforms(10);
     }
 
-    //나이대 별로 가장 많이 구독한 8개 플랫폼 조회하는 메서드
+    //나이대 별로 가장 많이 구독한 10개 플랫폼 조회하는 메서드
     public List<Platform> findPopularPlatformsByAge(Member member) {
         Member findMember = memberService.findVerifiedMember(member.getMemberId());
-        return platformRepository.findPopularPlatformsByAge(findMember.getAge(), 8);
+        return platformRepository.findPopularPlatformsByAge(findMember.getAge(), 10);
     }
 
     //플랫폼 별 통계 조회 (나이대별 구독, 성별별 구독)
