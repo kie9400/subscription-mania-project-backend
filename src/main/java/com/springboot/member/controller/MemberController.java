@@ -100,7 +100,7 @@ public class MemberController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
-    @PostMapping("/findId")
+    @PostMapping("/findid")
     public ResponseEntity findIdGetMember(@Valid @RequestBody MemberDto.FindId findIdDto){
         Member member = memberService.findMemberEmail(mapper.findIdDtoToMember(findIdDto));
         MemberDto.FindIdResponse response = mapper.memberToFindId(member);
