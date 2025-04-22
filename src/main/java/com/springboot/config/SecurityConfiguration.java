@@ -12,6 +12,7 @@ import com.springboot.auth.utils.MemberDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,6 +66,28 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        //Admin
+                        .antMatchers("/admin/**").hasRole("ADMIN")
+                        //Memeber
+                        .antMatchers(HttpMethod.POST, "/members").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/members").hasAnyRole("USER")
+                        //Mypage
+                        .antMatchers(HttpMethod.GET, "/mypage").hasRole("USER")
+                        //Review
+                        .antMatchers(HttpMethod.POST, "/reviews").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/reviews/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/reviews/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/reviews").permitAll()
+                        .antMatchers(HttpMethod.POST, "/recommend").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/recommend").hasRole("USER")
+                        //Subs
+                        .antMatchers(HttpMethod.POST, "subscription").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "subscription/**").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "subscription/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "subscription/**").hasRole("USER")
+                        //auth
+                        .antMatchers(HttpMethod.POST, "auth/logout").hasAnyRole("USER", "ADMIN")
                         .anyRequest().permitAll()
                 );
         return http.build();

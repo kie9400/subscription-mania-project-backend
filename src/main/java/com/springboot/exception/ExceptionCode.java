@@ -24,7 +24,8 @@ public enum ExceptionCode {
     SEND_MAIL_FAILED(400,"메일 전송에 실패했습니다."),
     PASSWORD_NOT_MATCHED(400, "비밀번호가 일치하지 않습니다."),
     PASSWORD_SAME_AS_OLD(400, "새 비밀번호가 기존에 사용한 비밀번호와 동일합니다."),
-    LOGOUT_ERROR(409, "로그아웃에 실패했습니다.");
+    LOGOUT_ERROR(409, "로그아웃에 실패했습니다."),
+    TOKEN_NOT_FOUND(401,"ACCESS_TOKEN_NOT_FOUND");
 
     @Getter
     private int status;

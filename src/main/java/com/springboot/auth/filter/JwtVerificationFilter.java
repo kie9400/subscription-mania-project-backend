@@ -3,6 +3,8 @@ package com.springboot.auth.filter;
 import com.springboot.auth.jwt.JwtTokenizer;
 import com.springboot.auth.utils.AuthorityUtils;
 import com.springboot.auth.utils.MemberDetailsService;
+import com.springboot.exception.BusinessLogicException;
+import com.springboot.exception.ExceptionCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -61,6 +63,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private Map<String, Object> verifyJws(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+
+        //헤더가 없을 경우(로그인한 회원이 아님[검증된 토큰자체가 없음])
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
+        }
+
         //로그인 인증이 성공되면 서버 측에서 Authorization Header에 JWT를 추가했다.
         //클라이언트가 response header로 전달받은 JWT를 request header에 추가해서 서버 측에 전송
         //request의 header에서 JWT를 얻어오며, replace()메서드를 통해 Bearer부분을 제거
