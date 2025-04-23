@@ -20,5 +20,8 @@ public class PlanDto {
 
         @Schema(description = "요금제", example = "13500")
         private int price;
+
+        @Schema(description = "결제주기", example = "월")
+        private String billingCycle;
     }
 }

@@ -25,6 +25,7 @@ public interface PlatformMapper {
                                 .subsPlanId(subsPlan.getSubsPlanId())
                                 .planName(subsPlan.getPlanName())
                                 .price(subsPlan.getPrice())
+                                .billingCycle(subsPlan.getBillingCycle())
                                 .build())
                         .collect(Collectors.toList())
                 );

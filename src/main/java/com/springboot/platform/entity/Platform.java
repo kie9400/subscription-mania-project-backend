@@ -16,6 +16,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "platform", indexes = {
+        @Index(name = "idx_platform_name", columnList = "platformName"),
+})
 public class Platform {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
