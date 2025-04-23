@@ -54,7 +54,9 @@ public class ReviewDto {
         private int rating;
         @Schema(description = "회원 ID", example = "1")
         private long memberId;
-        @Schema(description = "작성자명", example = "김철수")
+        @Schema(description = "작성자 명", example = "김철수")
         private String memberName;
+        @Schema(description = "작성자 프로필 이미지", example = "/images/members/1/profile.png")
+        private String memberImage;
     }
 }

@@ -20,6 +20,7 @@ public interface ReviewMapper {
                 .recommendCount(review.getRecommendCount())
                 .memberId(review.getMember().getMemberId())
                 .memberName(review.getMember().getName())
+                .memberImage(review.getMember().getImage())
                 .rating(review.getRating());
         return builder.build();
     }
