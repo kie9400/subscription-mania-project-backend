@@ -80,8 +80,7 @@ public class ReviewService {
         return saveReview;
     }
 
-    public Page<Review> findReviews(int page, int size, Long memberId, Long platformId){
-        memberService.findVerifiedMember(memberId);
+    public Page<Review> findReviews(int page, int size, Long platformId){
         Platform findPlatform = platformService.findVerifiedPlatform(platformId);
         Pageable pageable = PageRequest.of(page, size);
 

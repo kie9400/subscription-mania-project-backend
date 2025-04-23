@@ -85,16 +85,13 @@ public class ReviewController {
             @ApiResponse(responseCode = "201", description = "리뷰 조회 완료",
                     content = @Content(
                             mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ReviewDto.Response.class))
-                    )),
-            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
+                    ))
     })
     @GetMapping
     public ResponseEntity getReviews(@PathVariable("platform-id") long platformId,
                                       @Positive @RequestParam int page,
-                                      @Positive @RequestParam int size,
-                                      @Parameter(hidden = true) @AuthenticationPrincipal Member member){
-        Page<Review> reviewPage = reviewService.findReviews(page - 1, size, member.getMemberId(), platformId);
+                                      @Positive @RequestParam int size){
+        Page<Review> reviewPage = reviewService.findReviews(page - 1, size, platformId);
         List<Review> reviews = reviewPage.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>
