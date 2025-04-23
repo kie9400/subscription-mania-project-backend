@@ -21,4 +21,7 @@ public class MainDto {
 
     @Schema(description = "추천 플랫폼 리스트", example = "[{\"platformId\":1,\"platformName\":\"넷플릭스\",\"platformImage\":\"/images/platform/netflix.png\",\"ratingAvg\":4.5}]")
     List<PlatformDto.AllResponse> platforms;
+
+    @Schema(description = "나이별 구독 플랫폼 리스트", example = "[{\"platformId\":1,\"platformName\":\"넷플릭스\",\"platformImage\":\"/images/platform/netflix.png\",\"ratingAvg\":4.5}]")
+    List<PlatformDto.AllResponse> ageBasedPlatforms;
 }

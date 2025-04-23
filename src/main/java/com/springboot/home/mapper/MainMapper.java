@@ -9,10 +9,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MainMapper {
-    default MainDto responseDtoToMainDto(List<CategoryDto.Response> categories, List<PlatformDto.AllResponse> platforms) {
+    default MainDto responseDtoToMainDto(List<CategoryDto.Response> categories, List<PlatformDto.AllResponse> platforms, List<PlatformDto.AllResponse> ageBased) {
         MainDto dto = new MainDto();
         dto.setCategories(categories);
         dto.setPlatforms(platforms);
+        dto.setAgeBasedPlatforms(ageBased);
         return dto;
     }
 }

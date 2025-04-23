@@ -27,6 +27,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @Tag(name = "메인페이지 API", description = "메인페이지 관련 API")
@@ -55,18 +56,18 @@ public class MainController {
     @GetMapping("/main")
     public ResponseEntity getMainPage(@Parameter(hidden = true) @AuthenticationPrincipal Member member){
         List<Category> categories = categoryService.findCategories();
-        List<Platform> platforms;
+        List<Platform> platforms =  platformService.findTopRatedPlatforms();
+        List<Platform> ageBasedPlatforms = Collections.emptyList();
 
-        if(member != null){
-            platforms = platformService.findPopularPlatformsByAge(member);
-        }else {
-            platforms = platformService.findTopRatedPlatforms();
+        if(member != null) {
+            ageBasedPlatforms = platformService.findPopularPlatformsByAge(member); // limit은 필요 시 조정
         }
 
         List<CategoryDto.Response> categoryResponse = categoryMapper.categoryToCategoryResponseDtos(categories);
         List<PlatformDto.AllResponse> platformResponse = platformMapper.toAllResponseList(platforms);
+        List<PlatformDto.AllResponse> ageBasedResponse = platformMapper.toAllResponseList(ageBasedPlatforms);
 
-        MainDto mainDto = mapper.responseDtoToMainDto(categoryResponse, platformResponse);
+        MainDto mainDto = mapper.responseDtoToMainDto(categoryResponse, platformResponse, ageBasedResponse);
         return new ResponseEntity<>(new SingleResponseDto<>(mainDto), HttpStatus.OK);
     }
 }
