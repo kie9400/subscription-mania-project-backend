@@ -158,8 +158,9 @@ public class MemberController {
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity patchMember(@RequestPart("data") @Valid MemberDto.Patch memberPatchDto,
                                       @Parameter(hidden = true) @AuthenticationPrincipal Member authenticatedmember,
-                                      @RequestPart(required = false) MultipartFile profileImage){
-        Member member = memberService.updateMember(mapper.memberPatchToMember(memberPatchDto), authenticatedmember.getMemberId(), profileImage);
+                                      @RequestPart(required = false) MultipartFile profileImage,
+                                      @RequestParam(value = "imageDeleted", required = false) Boolean imageDeleted){
+        Member member = memberService.updateMember(mapper.memberPatchToMember(memberPatchDto), authenticatedmember.getMemberId(), profileImage, imageDeleted);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

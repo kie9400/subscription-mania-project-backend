@@ -93,7 +93,7 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public Member updateMember(Member member, Long memberId, MultipartFile profileImage){
+    public Member updateMember(Member member, Long memberId, MultipartFile profileImage, boolean imageDeleted){
         Member findMember = findVerifiedMember(memberId);
         validateQuitMember(findMember);
 
@@ -104,8 +104,12 @@ public class MemberService {
         Optional.of(member.getAge())
                 .ifPresent(findMember::setAge);
 
-        //이미지 업로드, null이면 변경하지않음
-        uploadImage(findMember, profileImage);
+        if (imageDeleted && profileImage == null) {
+            member.setImage(defaultImagePath);
+        } else {
+            //이미지 업로드, null이면 변경하지않음
+            uploadImage(findMember, profileImage);
+        }
 
         return memberRepository.save(findMember);
     }
