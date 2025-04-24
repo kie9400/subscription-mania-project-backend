@@ -1,5 +1,7 @@
 package com.springboot.notification.service;
 
+import com.springboot.exception.BusinessLogicException;
+import com.springboot.exception.ExceptionCode;
 import com.springboot.mail.service.MailService;
 import com.springboot.member.entity.Member;
 import com.springboot.notification.entity.Notification;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,6 +41,16 @@ public class NotificationService {
         notification.setSent(false);
 
         notificationRepository.save(notification);
+    }
+
+    public void cancleNotifications(Subscription subscription){
+        Optional<Notification> optionalNotification = notificationRepository.findBySubscription_SubscriptionId(subscription.getSubscriptionId());
+
+        Notification notification = optionalNotification.orElseThrow(()
+                -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+
+        //지금은 db에서 삭제하지만 이후 데이터를 남기려면 is_sent가 아닌 상태 컬럼을 하나 만들어야 될것으로 예상된다.
+        notificationRepository.delete(notification);
     }
 
     @Scheduled(cron = "0 0 0/12 * * *")

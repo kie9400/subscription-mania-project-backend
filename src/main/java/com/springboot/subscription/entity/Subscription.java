@@ -21,7 +21,7 @@ public class Subscription extends BaseEntity {
     private Long subscriptionId;
 
     //구독 시작일
-    @Column(name = "subscription_at", updatable = false, nullable = false)
+    @Column(name = "subscription_at", nullable = false)
     private LocalDate subscriptionAt;
 
     //다음 결제일
