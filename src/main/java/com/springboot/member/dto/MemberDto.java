@@ -36,8 +36,8 @@ public class MemberDto {
         private String email;
 
         @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
-        @Pattern(regexp = "^(?=(?:.*[A-Za-z]){6,})(?=.*\\d)(?=(?:[^%$#@!]*[%$#@!]){2,})[A-Za-z\\d%$#@!]{8,20}$",
-                message = "비밀번호는 8~20자 영문(최소 6자), 숫자, 특수문자(%,$,#,@,!) 2자 이상을 조합해야 합니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@\\[\\\\\\]^_`{|}~₩])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@\\[\\\\\\]^_`{|}~₩]{8,20}$",
+                message = "비밀번호는 영문자, 숫자, 특수문자를 포함한 8~20자 여야 합니다.")
         @Schema(description = "사용자 비밀번호", example = "password123!@")
         private String password;
 

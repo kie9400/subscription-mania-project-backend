@@ -59,7 +59,10 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepositoryCustom{
                 .join(subs.subsPlan, plan).fetchJoin()
                 .join(plan.platform, platform).fetchJoin()
                 .join(platform.category, category).fetchJoin()
-                .where(subs.member.memberId.eq(memberId))
+                .where(
+                        subs.member.memberId.eq(memberId),
+                        subs.subsStatus.eq(Subscription.SubsStatus.SUBSCRIBE_ACTIVE)
+                )
                 .fetch();
     }
 

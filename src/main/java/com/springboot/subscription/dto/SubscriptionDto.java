@@ -40,6 +40,9 @@ public class SubscriptionDto {
     @Builder
     @NoArgsConstructor
     public static class Response{
+        @Schema(description = "플랫폼 ID", example = "1")
+        private long platformId;
+
         @Schema(description = "플랫폼 이름", example = "넷플릭스")
         private String platformName;
 

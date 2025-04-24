@@ -188,8 +188,13 @@ public class MemberService {
     //아이디를 찾기위한 메서드
     @Transactional(readOnly = true)
     public Member findMemberEmail(Member member){
-        return memberRepository.findByPhoneNumber(member.getPhoneNumber())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        Optional<Member> optionalMember = memberRepository.findByPhoneNumber(member.getPhoneNumber());
+        Member findMember = optionalMember.orElseThrow(()->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        //해당 회원이 탈퇴된 회원이면 예외처리
+        validateQuitMember(findMember);
+        return findMember;
     }
 
     //이메일 중복 확인 메서드

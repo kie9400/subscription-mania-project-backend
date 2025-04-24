@@ -7,7 +7,7 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409,"이미 가입된 회원입니다."),
     MEMBER_NOT_OWNER(403, "작성자만 가능합니다."),
     MEMBER_NOT_ADMIN(403, "관리자 계정만 가능합니다."),
-    MEMBER_DELETE(404, "이 회원은 탈퇴된 회원입니다."),
+    MEMBER_DELETE(409, "이 회원은 탈퇴된 회원입니다."),
     PLATFORM_NOT_SUBSCRIPTION(403, "해당 플랫폼에 구독하지 않았습니다."),
     MEMBER_PHONE_NUMBER_EXISTS(409, "이 휴대폰 번호는 이미 존재합니다."),
     INVALID_REFRESH_TOKEN(400, "유효하지 않은 리플래시 토큰입니다."),

@@ -14,6 +14,7 @@ public interface SubscriptionMapper {
     Subscription subsPostDtoToSubs(SubscriptionDto.Post requestBody);
     Subscription subsPatchDtoToSubs(SubscriptionDto.Patch requestBody);
 
+    @Mapping(target = "platformId", source = "subsPlan.platform.platformId")
     @Mapping(target = "platformName", source = "subsPlan.platform.platformName")
     @Mapping(target = "platformImage", source = "subsPlan.platform.platformImage")
     @Mapping(target = "subsPlanName", source = "subsPlan.planName")
