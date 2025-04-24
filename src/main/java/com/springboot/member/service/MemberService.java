@@ -105,7 +105,7 @@ public class MemberService {
                 .ifPresent(findMember::setAge);
 
         if (imageDeleted && profileImage == null) {
-            member.setImage(defaultImagePath);
+            findMember.setImage(defaultImagePath);
         } else {
             //이미지 업로드, null이면 변경하지않음
             uploadImage(findMember, profileImage);
