@@ -257,8 +257,9 @@ public class MemberService {
             //String relativePath = storageService.store(multipartFile, pathWithoutExt);
             //String imageUrl = "/images/" + relativePath;
 
+            //실제 업로드는 S3에 하지만 DB에선 상대경로만 저장하여 DB수정없이 대응 가능하도록 한다.
             String imageUrl = storageService.store(multipartFile, pathWithoutExt);
-            findMember.setImage(imageUrl);
+            findMember.setImage(pathWithoutExt);
         }
     }
 
