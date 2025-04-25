@@ -27,7 +27,8 @@ public class S3StorageService implements StorageService {
     public String store(MultipartFile file, String fileNameWithoutExt) {
         try {
             String extension = getExtension(file.getOriginalFilename());
-            String fileName = fileNameWithoutExt + "." + extension;
+            //S3 key값을 "/"를 제거하고 넣는다. ("/"폴더 생성 방지)
+            String fileName = fileNameWithoutExt.replaceFirst("^/+", "") + "." + extension;
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
