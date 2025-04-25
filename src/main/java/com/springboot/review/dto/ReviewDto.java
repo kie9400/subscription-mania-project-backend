@@ -14,7 +14,7 @@ public class ReviewDto {
     public static class Post{
         @Schema(description = "리뷰 내용", example = "본문이에용")
         @NotBlank(message = "리뷰 본문은 공백이어서는 안됩니다.")
-        @Size(min = 1, max = 50, message = "본문은 1~50자 이내이어야 합니다." )
+        @Size(min = 1, max = 200, message = "본문은 200자 이내이어야 합니다." )
         private String content;
 
         @Schema(description = "별점", example = "3")
@@ -30,7 +30,7 @@ public class ReviewDto {
 
         @Schema(description = "리뷰 내용", example = "본문이에용")
         @NotBlank(message = "리뷰 본문은 공백이어서는 안됩니다.")
-        @Size(min = 1, max = 50, message = "본문은 1~50자 이내이어야 합니다." )
+        @Size(min = 1, max = 200, message = "본문은 200자 이내이어야 합니다." )
         private String content;
 
         @Schema(description = "별점", example = "3")
