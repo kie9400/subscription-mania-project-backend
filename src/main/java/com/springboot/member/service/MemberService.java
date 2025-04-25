@@ -253,7 +253,7 @@ public class MemberService {
 
         if (multipartFile != null && !multipartFile.isEmpty()){
             // 프로필 이미지 덮어쓰기 되도록 구현
-            String pathWithoutExt = "members/" + findMember.getMemberId() + "/profile";
+            String pathWithoutExt = "/members/" + findMember.getMemberId() + "/profile";
             //String relativePath = storageService.store(multipartFile, pathWithoutExt);
             //String imageUrl = "/images/" + relativePath;
 
