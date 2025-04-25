@@ -65,7 +65,6 @@ jobs:
               'sudo docker pull hogeun99/project-cicd:${GITHUB_SHA::7}',
               'sudo docker tag hogeun99/project-cicd:${GITHUB_SHA::7} project-cicd',
               'sudo docker run -d --name server -p 8080:8080 \\
-                -v /home/ubuntu/fileImage:/app/fileImage \\
                 -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \\
                 -e ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }} \\
                 -e SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} \\
