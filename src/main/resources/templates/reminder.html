@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 예정 구독 알림</title>
+</head>
+<body>
+<h2>📢 구독 결제 예정 알림</h2>
+
+<p>안녕하세요, 구독매니아입니다.<br>
+    아래 구독 서비스들의 결제일이 1~3일 남았습니다.</p>
+
+<ul>
+    <li th:each="sub : ${subscriptions}">
+        <strong th:text="${sub.subsPlan.platform.platformName}">플랫폼</strong> -
+        <span th:text="${sub.nextPaymentDate}">2025-05-15</span>
+    </li>
+</ul>
+
+<p>📌 만약 해당 구독을 취소하셨으면 사이트에 접속하셔서 구독을 취소하셔야 합니다.</p>
+
+<p style="margin-top: 30px; font-size: 13px; color: #888;">
+    ※ 본 메일은 발신 전용입니다. 회신하지 말아주세요.
+</p>
+</body>
+</html>

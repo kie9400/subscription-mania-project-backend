@@ -1,7 +1,26 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587 #Gmail SMTP 서버 포트
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          writetimeout: 5000
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  data:
+    redis:
+      host: localhost  # Redis 서버의 호스트 주소를 설정
+      port: 6379       # Redis 서버가 수신 대기하는 포트를 설정
   h2:
     console:
       enabled: true
@@ -17,7 +36,7 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
-#    defer-datasource-initialization: true  # data.sql 실행 시점 조정
+    defer-datasource-initialization: true  # data.sql 실행 시점 조정
   sql:
     init:
       mode: always
@@ -36,3 +55,13 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
     try-it-out-enabled: true
+mail:
+  address:
+    admin: admin@gmail.com
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 600
+  refresh-token-expiration-minutes: 4200
+file:
+  upload-dir: fileImage
+  default-image: /images/noImage.png
