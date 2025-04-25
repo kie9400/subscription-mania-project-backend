@@ -16,9 +16,9 @@ jobs:
       AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
       SPRING_MAIL_USERNAME: ${{ secrets.SPRING_MAIL_USERNAME }}
       SPRING_MAIL_PASSWORD: ${{ secrets.SPRING_MAIL_PASSWORD }}
-#      RDS_ENDPOINT: ${{ secrets.RDS_ENDPOINT }}
-#      MYSQL_USER: ${{ secrets.MYSQL_USER }}
-#      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      RDS_ENDPOINT: ${{ secrets.RDS_ENDPOINT }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -71,6 +71,9 @@ jobs:
                 -e AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} \\
                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \\
                 -e AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }} \\
+                -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \\
+                -e MYSQL_USER=${{ secrets.MYSQL_USER }} \\
+                -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \\
                 project-cicd'
             ]" \
             --output text
