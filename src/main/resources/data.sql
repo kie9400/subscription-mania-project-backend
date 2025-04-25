@@ -47,7 +47,7 @@ VALUES
   (26, '배민클럽', '/platform/baemin.png', '배달의민족 배달팁 무료, 무제한 장보기 및 쇼핑 할인 혜택 포함 구독형 멤버십', 0, 0, '2024-05-28', 6),
   (27, '요기패스', '/platform/yogiyo.png', '요기요 배달비 무료, 마트·편의점 혜택 포함 구독형 멤버십', 0, 0, '2021-11-01', 6),
 
-  (29, 'ChatGPT', '/platform/chatgpt.png', 'OpenAI에서 개발한 GPT를 기반으로 하는 대화형 인공지능 서비스', 0, 0, '2023-02-01', 7)
+  (29, 'ChatGPT', '/platform/chatgpt.png', 'OpenAI에서 개발한 GPT를 기반으로 하는 대화형 인공지능 서비스', 0, 0, '2023-02-01', 7);
 
 INSERT INTO subs_plan (plan_name, price, platform_id, billing_cycle) VALUES
 ('광고형 스탠다드', 5500, 1, '월'),
