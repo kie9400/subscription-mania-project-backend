@@ -39,7 +39,7 @@ spring:
     defer-datasource-initialization: true  # data.sql 실행 시점 조정
   sql:
     init:
-      mode: never #naver는 sql파일을 실행하지 않는다 -> 실행 필요할경우 -> always
+      mode: never #never는 sql파일을 실행하지 않는다 -> 실행 필요할경우 -> always
 
 logging:
   level:
