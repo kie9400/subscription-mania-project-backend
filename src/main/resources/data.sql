@@ -1,12 +1,12 @@
 INSERT INTO category (category_id, category_name, category_image)
 VALUES
-  (1, '문화', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/culture.png'),
-  (2, '도서', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/book.png'),
-  (3, '교육', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/study.png'),
-  (4, '음악', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/music.png'),
-  (5, '쇼핑', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/shopping.png'),
-  (6, '배달', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/delivery.png'),
-  (7, '기타', 'https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/category/etc.png');
+  (1, '문화', 'category/culture.png'),
+  (2, '도서', 'category/book.png'),
+  (3, '교육', 'category/study.png'),
+  (4, '음악', 'category/music.png'),
+  (5, '쇼핑', 'category/shopping.png'),
+  (6, '배달', 'category/delivery.png'),
+  (7, '기타', 'category/etc.png');
 
 INSERT INTO platform (
   platform_id, platform_name, platform_image, platform_description,
