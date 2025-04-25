@@ -63,5 +63,16 @@ jwt:
   access-token-expiration-minutes: 600
   refresh-token-expiration-minutes: 4200
 file:
-  upload-dir: fileImage
-  default-image: /images/noImage.png
+  upload-dir: s3://subs-upload-files/
+  default-image: https://subs-upload-files.s3.ap-northeast-2.amazonaws.com/noImage.png
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: ${AWS_BUCKET_NAME}
+    stack:
+      auto: false
