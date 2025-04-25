@@ -26,6 +26,7 @@ public interface MemberMapper {
     List<MemberDto.ReviewsResponse> reviewToMyReviews(List<Review>reviews);
 
     @Mapping(target = "reviewId", source = "reviewId")
+    @Mapping(target = "platformId", source = "platform.platformId")
     @Mapping(target = "platformImage", source = "platform.platformImage")
     @Mapping(target = "platformName", source = "platform.platformName")
     @Mapping(target = "content", source = "content")

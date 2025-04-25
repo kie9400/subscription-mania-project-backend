@@ -23,9 +23,7 @@ public class AdminService {
         if(!memberService.isAdmin(adminId)){
             throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED);
         }
-        Member findMember = memberService.findVerifiedMember(memberId);
-
-        return findMember;
+        return memberService.findMember(memberId);
     }
 
     //전체 회원 목록 조회

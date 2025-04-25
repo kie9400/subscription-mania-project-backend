@@ -166,6 +166,9 @@ public class MemberDto {
         @Schema(description = "리뷰 ID", example = "1")
         private long reviewId;
 
+        @Schema(description = "플랫폼 ID", example = "1")
+        private long platformId;
+
         @Schema(description = "플랫폼 이미지", example = "/images/platform/netflix.png")
         private String platformImage;
 
