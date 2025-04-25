@@ -36,9 +36,10 @@ public class S3StorageService implements StorageService {
 
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, file.getInputStream(), metadata);
             amazonS3.putObject(putObjectRequest);
-            log.info("S3 업로드 완료: {}", fileName);
 
-            return "https://" + bucket + ".s3." + region + ".amazonaws.com" + fileName; // 또는 필요 시 전체 URL 반환 가능
+            //S3에 저장할땐 fileName
+            //db에 저장할땐 /fileName
+            return "/" + fileName;
         } catch (IOException e) {
             throw new RuntimeException("S3 파일 업로드 실패", e);
         }
