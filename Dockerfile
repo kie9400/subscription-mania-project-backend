@@ -8,4 +8,4 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 # jar 파일 실행 server 쓸거면 local -> server로 바꿔야함
-ENTRYPOINT ["java","-Dspring.profiles.active=local","-jar","/app.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=server","-jar","/app.jar"]

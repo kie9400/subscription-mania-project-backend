@@ -16,7 +16,6 @@ jobs:
       AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
       SPRING_MAIL_USERNAME: ${{ secrets.SPRING_MAIL_USERNAME }}
       SPRING_MAIL_PASSWORD: ${{ secrets.SPRING_MAIL_PASSWORD }}
-#      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
 #      RDS_ENDPOINT: ${{ secrets.RDS_ENDPOINT }}
 #      MYSQL_USER: ${{ secrets.MYSQL_USER }}
 #      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
