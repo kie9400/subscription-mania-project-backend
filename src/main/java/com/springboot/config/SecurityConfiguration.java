@@ -32,7 +32,7 @@ import java.util.Arrays;
 //이후 수정이 필요할 수 있다.
 //CrossOrigin은 해당 주소에서 오는 요청만 허용한다.
 @Configuration
-@CrossOrigin(origins = "http://subsmania.stie.s3-website.ap-northeast-2.amazonaws.com")
+@CrossOrigin(origins = "http://subsmania.shop")
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final AuthorityUtils authorityUtils;
@@ -104,7 +104,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // React Vite 주소로 변경
-        configuration.setAllowedOrigins(Arrays.asList("http://subsmania.stie.s3-website.ap-northeast-2.amazonaws.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://subsmania.shop"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
