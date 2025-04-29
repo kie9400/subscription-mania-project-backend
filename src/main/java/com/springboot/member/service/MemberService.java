@@ -215,7 +215,7 @@ public class MemberService {
         }
 
         try {
-            String tempPw = generateTempPassword();
+            String tempPw = passwordEncoder.encode(generateTempPassword());
             mailService.sendTempPassword(findMember.getEmail(), tempPw);
 
             findMember.setPassword(tempPw);
