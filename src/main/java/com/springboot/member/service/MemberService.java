@@ -97,6 +97,7 @@ public class MemberService {
     public Member updateMember(Member member, Long memberId, MultipartFile profileImage, boolean imageDeleted){
         Member findMember = findVerifiedMember(memberId);
         validateQuitMember(findMember);
+        verifyExistsName(member.getName());
 
         Optional.ofNullable(member.getName())
                 .ifPresent(findMember::setName);
@@ -104,6 +105,8 @@ public class MemberService {
                 .ifPresent(findMember::setGender);
         Optional.of(member.getAge())
                 .ifPresent(findMember::setAge);
+
+
 
         if (imageDeleted && profileImage == null) {
             findMember.setImage(defaultImagePath);
