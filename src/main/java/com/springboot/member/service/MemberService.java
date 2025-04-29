@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -186,8 +187,7 @@ public class MemberService {
     }
 
     //아이디를 찾기위한 메서드
-    @Transactional(readOnly = true)
-    public Member findMemberEmail(Member member){
+    public Member findMemberId(Member member){
         Optional<Member> optionalMember = memberRepository.findByPhoneNumber(member.getPhoneNumber());
         Member findMember = optionalMember.orElseThrow(()->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
@@ -195,6 +195,52 @@ public class MemberService {
         //해당 회원이 탈퇴된 회원이면 예외처리
         validateQuitMember(findMember);
         return findMember;
+    }
+
+    //임시 비밀번호 발급 메서드
+    public void findPw(Member member) {
+        Optional <Member> optionalMember = memberRepository.findByEmail(member.getEmail());
+        Member findMember = optionalMember.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        if(!findMember.getName().equals(member.getName())){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_NAME);
+        }
+
+        if(!findMember.getPhoneNumber().equals(member.getPhoneNumber())){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_PHONE);
+        }
+
+        try {
+            String tempPw = generateTempPassword();
+            mailService.sendTempPassword(findMember.getEmail(), tempPw);
+
+            findMember.setPassword(tempPw);
+            memberRepository.save(findMember);
+        } catch (MessagingException e) {
+            throw new BusinessLogicException(ExceptionCode.SEND_MAIL_FAILED);
+        }
+    }
+
+    private String generateTempPassword(){
+        // 특수문자 목록
+        char[] specialCharSet = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_' };
+
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        StringBuilder tempPw = new StringBuilder();
+
+        for (int i = 0; i < 10; i++) {
+            int idx = (int) (charSet.length * Math.random());
+            tempPw.append(charSet[idx]);
+        }
+
+        // 특수문자 랜덤으로 추가
+        int specialIdx = (int) (specialCharSet.length * Math.random());
+        tempPw.append(specialCharSet[specialIdx]);
+
+        return tempPw.toString();
     }
 
     //이메일 중복 확인 메서드

@@ -22,8 +22,10 @@ public interface MemberMapper {
     MemberDto.MyInfoResponse memberToMyInfo(Member member);
     Member findIdDtoToMember(MemberDto.FindId requestBody);
     MemberDto.FindIdResponse memberToFindId(Member member);
+    Member findPwDtoToMember(MemberDto.FindPw requestBody);
     Member memberDeleteToMember(MemberDto.Delete requestBody);
     List<MemberDto.ReviewsResponse> reviewToMyReviews(List<Review>reviews);
+
 
     @Mapping(target = "reviewId", source = "reviewId")
     @Mapping(target = "platformId", source = "platform.platformId")

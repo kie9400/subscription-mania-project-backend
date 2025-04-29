@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -101,11 +102,18 @@ public class MemberController {
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}")))
     })
     @PostMapping("/findid")
-    public ResponseEntity findIdGetMember(@Valid @RequestBody MemberDto.FindId findIdDto){
-        Member member = memberService.findMemberEmail(mapper.findIdDtoToMember(findIdDto));
+    public ResponseEntity findId(@Valid @RequestBody MemberDto.FindId findIdDto){
+        Member member = memberService.findMemberId(mapper.findIdDtoToMember(findIdDto));
         MemberDto.FindIdResponse response = mapper.memberToFindId(member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
+    @PostMapping("/findpw")
+    public ResponseEntity findPw(@Valid @RequestBody MemberDto.FindPw findPwDto){
+        memberService.findPw(mapper.findPwDtoToMember(findPwDto));
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "회원 탈퇴(자신)", description = "자신(회원)이 탈퇴 합니다.")

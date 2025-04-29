@@ -101,6 +101,24 @@ public class MemberDto {
     }
 
     @Getter
+    public static class FindPw{
+        @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
+        @Email
+        @Schema(description = "사용자 이메일", example = "example@gmail.com")
+        private String email;
+
+        @Pattern(regexp = "^(?!\\s)(?!.*\\s{2,})(?!.*[~!@#$%^&*()_+=|<>?:{}\\[\\]\"';,.\\\\/`])[^\\s]{1,8}(?<!\\s)$",
+                message = "닉네임은 공백 없이 8자 이내, 특수문자를 포함하지 않아야 합니다.")
+        @Schema(description = "사용자 닉네임", example = "홍길동")
+        private String name;
+
+        @Schema(description = "사용자 전화번호", example = "010-1111-2222")
+        @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
+                message = "휴대폰 번호는 010으로 시작하는 11자리 숫자와 '-'로 구성되어야 합니다.")
+        private String phoneNumber;
+    }
+
+    @Getter
     public static class Delete{
         @Schema(description = "사용자 이메일", example = "example@gmail.com")
         @NotBlank(message = "이메일은 공백이 아니어야 합니다.")
