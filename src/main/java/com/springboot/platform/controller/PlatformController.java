@@ -45,7 +45,7 @@ public class PlatformController {
                     content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"status\": 404, \"message\": \"플랫폼을 찾을 수 없습니다.\"}")))
     })
     @GetMapping("{platform-id}")
-    public ResponseEntity getGroup(@PathVariable("platform-id") @Positive long platformId) {
+    public ResponseEntity getPlatform(@PathVariable("platform-id") @Positive long platformId) {
         Platform platform = platformService.findPlatform(platformId);
         PlatformDto.Response response = mapper.platformToPlatformResponse(platform);
 
