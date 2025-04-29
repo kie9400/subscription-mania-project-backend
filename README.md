@@ -41,9 +41,9 @@
 
 | 구분 | 기술 |
 |------|------|
-| **Frontend** | React |
-| **Backend** | Spring Boot, Spring Security |
-| **DB** | ... |
-| **Infra** | EC2, S3, GitHub Actions, Docker |
+| **Frontend** | React, React Query, Vite, CSS Modules, Chart.js |
+| **Backend** | Spring Boot, Spring Security, JWT, Spring Data JPA, Java, QueryDSL |
+| **DB** | MySQL, Redis |
+| **Infra** | EC2, S3, GitHub Actions, Docker, Route53, RDS |
 
 ---
