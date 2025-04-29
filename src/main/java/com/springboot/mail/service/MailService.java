@@ -66,4 +66,15 @@ public class MailService {
 
         sendTemplateEmail(email, templateName, subject, variables);
     }
+
+    //임시 비밀번호
+    public void sendTempPassword(String email, String tempPw) throws MessagingException{
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("tempPw", tempPw);
+
+        String subject = "[구독매니아] 임시 비밀번호 발급";
+        String templateName = "temp-password";
+
+        sendTemplateEmail(email, templateName, subject, variables);
+    }
 }
