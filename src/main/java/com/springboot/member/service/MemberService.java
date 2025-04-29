@@ -215,10 +215,11 @@ public class MemberService {
         }
 
         try {
-            String tempPw = passwordEncoder.encode(generateTempPassword());
+            String tempPw = generateTempPassword();
             mailService.sendTempPassword(findMember.getEmail(), tempPw);
 
-            findMember.setPassword(tempPw);
+            String encode = passwordEncoder.encode(tempPw);
+            findMember.setPassword(encode);
             memberRepository.save(findMember);
         } catch (MessagingException e) {
             throw new BusinessLogicException(ExceptionCode.SEND_MAIL_FAILED);
