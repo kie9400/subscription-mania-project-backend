@@ -1,7 +1,10 @@
 package com.springboot.platform.service;
 
+import com.springboot.category.entity.Category;
+import com.springboot.category.service.CategoryService;
 import com.springboot.exception.BusinessLogicException;
 import com.springboot.exception.ExceptionCode;
+import com.springboot.file.StorageService;
 import com.springboot.member.entity.Member;
 import com.springboot.member.service.MemberService;
 import com.springboot.platform.dto.PlatformDto;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -22,10 +26,36 @@ import java.util.Optional;
 public class PlatformService {
     private final PlatformRepository platformRepository;
     private final MemberService memberService;
+    private final CategoryService categoryService;
+    private final StorageService storageService;
 
-    public PlatformService(PlatformRepository platformRepository, MemberService memberService) {
+    public PlatformService(PlatformRepository platformRepository, MemberService memberService, CategoryService categoryService, StorageService storageService) {
         this.platformRepository = platformRepository;
         this.memberService = memberService;
+        this.categoryService = categoryService;
+        this.storageService = storageService;
+    }
+
+    public Platform createPlatform(Member member, Platform platform, long categoryId, MultipartFile image){
+        if(!memberService.isAdmin(member.getMemberId())){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ADMIN);
+        }
+
+        //플랫폼명이 이미 존재하는지 체크
+        verifyExistsPlatformName(platform.getPlatformName());
+
+        Category category = categoryService.findVerifiedCategory(categoryId);
+        platform.setCategory(category);
+
+        //이미지는 반드시 있어야 한다.
+        if (image == null || image.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND);
+        }
+
+        String imageUrl = uploadImage(image);
+        platform.setPlatformImage(imageUrl);
+
+        return platformRepository.save(platform);
     }
 
     @Transactional(readOnly = true)
@@ -89,5 +119,19 @@ public class PlatformService {
         if (optionalPlatform.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
         }
+    }
+
+    //이미지 등록
+    public String uploadImage(MultipartFile multipartFile){
+        if (multipartFile != null && !multipartFile.isEmpty()){
+            String fileName = multipartFile.getOriginalFilename();
+            //이미지명에서 확장자 제거
+            String fileNameWithoutExt = fileName.replaceFirst("\\.[^.]+$", "");
+
+            // 프로필 이미지 덮어쓰기 되도록 구현
+            String pathWithoutExt = "platform/" + fileNameWithoutExt;
+            return storageService.store(multipartFile, pathWithoutExt);
+        }
+        return null;
     }
 }
