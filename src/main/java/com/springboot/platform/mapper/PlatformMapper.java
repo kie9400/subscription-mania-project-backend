@@ -1,15 +1,36 @@
 package com.springboot.platform.mapper;
 
 import com.springboot.plan.dto.PlanDto;
+import com.springboot.plan.entity.SubsPlan;
 import com.springboot.platform.dto.PlatformDto;
 import com.springboot.platform.entity.Platform;
 import org.mapstruct.Mapper;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PlatformMapper {
+    default Platform platformPostToPlatform(PlatformDto.Post postDto){
+        Platform platform = new Platform();
+        platform.setPlatformName(postDto.getPlatformName());
+        platform.setPlatformDescription(postDto.getPlatformDescription());
+        platform.setServiceAt(postDto.getServiceAt());
+
+        List<SubsPlan> subsPlans = postDto.getSubsPlans().stream()
+                .map(subsPlanDto -> {
+                    SubsPlan subsPlan = new SubsPlan();
+                    subsPlan.setPlatform(platform);
+                    subsPlan.setPlanName(subsPlanDto.getPlanName());
+                    subsPlan.setPrice(subsPlanDto.getPrice());
+                    subsPlan.setBillingCycle(subsPlanDto.getBillingCycle());
+                    return subsPlan;
+                }).collect(Collectors.toList());
+        platform.setSubsPlans(subsPlans);
+        return platform;
+    }
+
     default PlatformDto.Response platformToPlatformResponse(Platform platform) {
         PlatformDto.Response.ResponseBuilder builder = PlatformDto.Response.builder()
                 .platformId(platform.getPlatformId())

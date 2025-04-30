@@ -31,10 +31,10 @@ public class Platform {
     private String platformDescription;
 
     @Column(nullable = false)
-    private double ratingAvg;
+    private double ratingAvg = 0.0;
 
     @Column(nullable = false)
-    private int reviewCount;
+    private int reviewCount = 0;
 
     @Column(nullable = false)
     private String platformImage;

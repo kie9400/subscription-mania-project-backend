@@ -2,6 +2,7 @@ package com.springboot.platform.dto;
 
 import com.springboot.member.entity.Member;
 import com.springboot.plan.dto.PlanDto;
+import com.springboot.plan.entity.SubsPlan;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -9,11 +10,35 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public class PlatformDto {
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Post{
+        @Schema(description = "플랫폼 이름", example = "SPOTV NOW")
+        private String platformName;
+
+        @Schema(description = "플랫폼 설명", example = "스포츠 콘텐츠를 중심으로 제공하는 OTT 서비스")
+        private String platformDescription;
+
+        @Schema(description = "카테고리 ID", example = "1")
+        private Long categoryId;
+
+        @Schema(description = "서비스 시작일자", example = "2017-06-01")
+        private LocalDate serviceAt;
+
+        @Schema(description = "구독 플랜 목록",
+                example = "[{\"planName\": \"베이직 이용권\", \"price\": 9900, \"billingCycle\": \"월\"}, " +
+                        "{\"planName\": \"프리미엄 이용권\", \"price\": 19900, \"billingCycle\": \"월\"}]")
+        private List<SubsPlan> subsPlans;
+    }
+
     @AllArgsConstructor
     @Getter
     @Builder
