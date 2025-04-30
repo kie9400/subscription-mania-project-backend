@@ -15,4 +15,5 @@ public interface AdminMapper {
     AdminDto.PlatformResponse responseDtoToPlatform(Platform platform);
     AdminDto.MemberResponse responseDtoToMember(Member member);
     List<AdminDto.MemberResponse> membersToMemberResponses(List<Member> members);
+    List<AdminDto.PlatformResponse> platformToPlatformResponses(List<Platform> platforms);
 }

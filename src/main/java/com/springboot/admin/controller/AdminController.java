@@ -7,6 +7,7 @@ import com.springboot.dto.MultiResponseDto;
 import com.springboot.dto.SingleResponseDto;
 import com.springboot.member.dto.MemberDto;
 import com.springboot.member.entity.Member;
+import com.springboot.platform.entity.Platform;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -112,11 +113,11 @@ public class AdminController {
     @GetMapping("/platforms")
     public ResponseEntity getPlatforms(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
                                        @Positive @RequestParam int page,
-                                       @Positive @RequestParam int size,){
-        Page<Member> memberPage = adminService.findMembers(page - 1 , size, member.getMemberId(), keyword);
-        List<Member> members = memberPage.getContent();
+                                       @Positive @RequestParam int size){
+        Page<Platform> platformPage = adminService.findPlatforms(page - 1 , size, member.getMemberId());
+        List<Platform> platforms = platformPage.getContent();
 
         return new ResponseEntity<> (new MultiResponseDto<>
-                (mapper.membersToMemberResponses(members),memberPage),HttpStatus.OK);
+                (mapper.platformToPlatformResponses(platforms),platformPage),HttpStatus.OK);
     }
 }
