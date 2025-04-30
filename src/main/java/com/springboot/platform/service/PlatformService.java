@@ -13,6 +13,7 @@ import com.springboot.platform.repository.PlatformRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,11 +59,20 @@ public class PlatformService {
         return platformRepository.save(platform);
     }
 
+    public void deletePlatform(Member member, Long platformId){
+        if(!memberService.isAdmin(member.getMemberId())){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ADMIN);
+        }
+        Platform findPlatform = findVerifiedPlatform(platformId);
+
+        platformRepository.delete(findPlatform);
+    }
+
+
     @Transactional(readOnly = true)
     public Platform findPlatform(long platformId) {
         Platform findPlatform = findVerifiedPlatform(platformId);
 
-        //활동중인 회원인지 검증이 필요함
         return findPlatform;
     }
 

@@ -57,6 +57,14 @@ public class PlatformController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @DeleteMapping("{platform-id}")
+    public ResponseEntity deletePlatform(@PathVariable("platform-id") @Positive long platformId,
+                                         @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        platformService.deletePlatform(member, platformId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @Operation(summary = "플랫폼 단일 조회", description = "플랫폼 상세 페이지를 조회 합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
