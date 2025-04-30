@@ -27,6 +27,8 @@ public enum ExceptionCode {
     PASSWORD_NOT_MATCHED(400, "비밀번호가 일치하지 않습니다."),
     PASSWORD_SAME_AS_OLD(400, "새 비밀번호가 기존에 사용한 비밀번호와 동일합니다."),
     LOGOUT_ERROR(409, "로그아웃에 실패했습니다."),
+    CATEGORY_NOT_FOUND(404,"카테고리를 찾을 수 없습니다."),
+    IMAGE_NOT_FOUND(404,"이미지를 찾을 수 없습니다."),
     TOKEN_NOT_FOUND(401,"ACCESS_TOKEN_NOT_FOUND");
 
     @Getter
