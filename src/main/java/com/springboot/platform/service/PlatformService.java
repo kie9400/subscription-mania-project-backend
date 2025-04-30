@@ -29,7 +29,7 @@ public class PlatformService {
     }
 
     @Transactional(readOnly = true)
-    public Platform findPlatform(long platformId){
+    public Platform findPlatform(long platformId) {
         Platform findPlatform = findVerifiedPlatform(platformId);
 
         //활동중인 회원인지 검증이 필요함
@@ -47,7 +47,7 @@ public class PlatformService {
         }
 
         // 검색어가 있지만 공백뿐이면 예외 처리
-        if (keyword.isBlank() ) {
+        if (keyword.isBlank()) {
             throw new BusinessLogicException(ExceptionCode.SEARCH_NOT_BLANK);
         }
 
@@ -55,7 +55,7 @@ public class PlatformService {
     }
 
     //존재하는 플랫폼인지 검증
-    public Platform findVerifiedPlatform(long platformId){
+    public Platform findVerifiedPlatform(long platformId) {
         Optional<Platform> optionalPlatform = platformRepository.findById(platformId);
 
         Platform platform = optionalPlatform.orElseThrow(() ->
@@ -75,10 +75,19 @@ public class PlatformService {
     }
 
     //플랫폼 별 통계 조회 (나이대별 구독, 성별별 구독)
-    public PlatformDto.PlatformStatisticsResponse getStatistics(Long platformId){
+    public PlatformDto.PlatformStatisticsResponse getStatistics(Long platformId) {
         Map<Member.Gender, Long> genderStats = platformRepository.countByPlatformSubsByGender(platformId);
         Map<Integer, Long> ageStats = platformRepository.countByPlatformSubsByAgeGroup(platformId);
 
         return new PlatformDto.PlatformStatisticsResponse(genderStats, ageStats);
+    }
+
+    //플랫폼명 중복 검증 메서드
+    public void verifyExistsPlatformName(String platformName) {
+        Optional<Platform> optionalPlatform = platformRepository.findByPlatformName(platformName);
+
+        if (optionalPlatform.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_EXISTS);
+        }
     }
 }
