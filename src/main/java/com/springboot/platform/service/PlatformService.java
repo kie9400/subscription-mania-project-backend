@@ -94,6 +94,16 @@ public class PlatformService {
         return platformRepository.findByCategoryAndKeywordAndRating(categoryId, keyword, rating, pageable, sort);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Platform> adminGetPlatforms(int page, int size, long memberId) {
+        if(!memberService.isAdmin(memberId)){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ADMIN);
+        }
+        Pageable pageable = PageRequest.of(page, size);
+
+        return platformRepository.findByPlatforms(pageable);
+    }
+
     //존재하는 플랫폼인지 검증
     public Platform findVerifiedPlatform(long platformId) {
         Optional<Platform> optionalPlatform = platformRepository.findById(platformId);

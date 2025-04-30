@@ -95,4 +95,28 @@ public class AdminController {
         adminService.deleteMember(memberId, member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    //플랫폼 목록 조회
+    @Operation(summary = "회원 목록 조회", description = "해당 서비스를 이용하는 회원 목록을 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 목록 조회 완료",
+                    content = @Content(
+                            mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = AdminDto.MemberResponse.class))
+                    )),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
+            @ApiResponse(responseCode = "403", description = "관리자가 아닙니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Forbidden\", \"message\": \"관리자만 접근이 가능합니다.\"}"))),
+    })
+    @GetMapping("/platforms")
+    public ResponseEntity getPlatforms(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
+                                       @Positive @RequestParam int page,
+                                       @Positive @RequestParam int size,){
+        Page<Member> memberPage = adminService.findMembers(page - 1 , size, member.getMemberId(), keyword);
+        List<Member> members = memberPage.getContent();
+
+        return new ResponseEntity<> (new MultiResponseDto<>
+                (mapper.membersToMemberResponses(members),memberPage),HttpStatus.OK);
+    }
 }

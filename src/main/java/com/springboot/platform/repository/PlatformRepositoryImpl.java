@@ -199,4 +199,24 @@ public class PlatformRepositoryImpl implements PlatformRepositoryCustom{
                         tuple -> tuple.get(subscription.count())
                 ));
     }
+
+    @Override
+    public Page<Platform> findByPlatforms(Pageable pageable) {
+        List<Platform> platforms = queryFactory
+                .selectFrom(platform)
+                .leftJoin(platform.category, category)  // 카테고리와 조인
+                .where(platform.platformId.isNotNull())  // 기본 조건 (platformId가 null이 아닌 것)
+                .offset(pageable.getOffset())  // 페이징 시작 위치
+                .limit(pageable.getPageSize())  // 한 페이지 당 크기
+                .orderBy(platform.platformId.asc())  // 예시: 플랫폼 ID 기준 오름차순 정렬
+                .fetch();
+
+        //현재 페이지 데이터 + 전체 데이터 수
+        Long total = queryFactory
+                .select(platform.count())
+                .from(platform)
+                .fetchOne();
+
+        return new PageImpl<>(platforms, pageable, total != null ? total : 0);
+    }
 }

@@ -19,6 +19,9 @@ public interface PlatformRepositoryCustom {
     //평점이 높은 상위 플랫폼 조회
     List<Platform> findTopRatedPlatforms(int limit);
 
+    //관리자 전용 플랫폼 전체 조회(구독자수 반영)
+    Page<Platform> findByPlatforms(Pageable pageable);
+
     //나이대 별로 가장 많이 구독한 플랫폼 조회
     List<Platform> findPopularPlatformsByAge(int age, int limit);
 

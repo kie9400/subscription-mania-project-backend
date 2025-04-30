@@ -1,11 +1,15 @@
 package com.springboot.admin.dto;
 
 import com.springboot.member.entity.Member;
+import com.springboot.plan.dto.PlanDto;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AdminDto {
     @AllArgsConstructor
@@ -34,5 +38,24 @@ public class AdminDto {
 
         @Schema(description = "휴대폰 번호", example = "010-1111-2222")
         private String phoneNumber;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class PlatformResponse {
+        @Parameter(description = "플랫폼 ID", example = "1")
+        private long platformId;
+
+        @Schema(description = "플랫폼 이름", example = "넷플릭스")
+        private String platformName;
+
+        @Schema(description = "플랫폼 이미지", example = "/images/platform/netflix.png")
+        private String platformImage;
+
+        @Schema(description = "카테고리 이름", example = "문화")
+        private String categoryName;
+
+        @Schema(description = "서비스 시작 날짜", example = "2016-01-07")
+        private LocalDate serviceAt;
     }
 }
