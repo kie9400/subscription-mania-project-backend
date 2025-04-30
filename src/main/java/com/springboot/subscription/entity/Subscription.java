@@ -36,7 +36,7 @@ public class Subscription extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "subs_plan_id")
     private SubsPlan subsPlan;
 
