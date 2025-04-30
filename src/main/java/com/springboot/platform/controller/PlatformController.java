@@ -2,11 +2,13 @@ package com.springboot.platform.controller;
 
 import com.springboot.dto.MultiResponseDto;
 import com.springboot.dto.SingleResponseDto;
+import com.springboot.member.entity.Member;
 import com.springboot.platform.dto.PlatformDto;
 import com.springboot.platform.entity.Platform;
 import com.springboot.platform.mapper.PlatformMapper;
 import com.springboot.platform.service.PlatformService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,10 +16,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -32,6 +38,23 @@ public class PlatformController {
     public PlatformController(PlatformMapper mapper, PlatformService platformService) {
         this.mapper = mapper;
         this.platformService = platformService;
+    }
+
+    @Operation(summary = "플랫폼 등록", description = "플랫폼 상세 페이지를 조회 합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "플랫폼 등록 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 입니다.(로그인 상태아님)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Unauthorized\", \"message\": \"인증되지 않은 사용자 입니다.\"}"))),
+            @ApiResponse(responseCode = "403", description = "관리자 계정이 아닙니다.",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\": \"Forbidden\", \"message\": \"권한이 없는 사용자 입니다.\"}"))),
+    })
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity postPlatform(@Valid @RequestPart("data") PlatformDto.Post postDto,
+                                       @RequestPart(required = false) MultipartFile image,
+                                       @Parameter(hidden = true) @AuthenticationPrincipal Member member){
+        Long categoryId = postDto.getCategoryId();
+        platformService.createPlatform(member, mapper.platformPostToPlatform(postDto), categoryId, image);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "플랫폼 단일 조회", description = "플랫폼 상세 페이지를 조회 합니다.")
