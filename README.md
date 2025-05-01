@@ -27,6 +27,7 @@
 - **프로젝트 개발자** : 송호근 (BE/FE) | 1인
 - **진행 기간** : 2025.04.06 ~ 25.05.01
 - **서비스 링크** : [구독 매니아](http://subsmania.shop)
+- **프론트 엔드 Repo 링크** : [LINK](https://github.com/kie9400/subscription-maina-project-frontend)
 
 ---
 
@@ -44,47 +45,47 @@
 ## 📺 기술 시연
 | 회원가입(이메일인증) | 회원가입(정보입력) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/f9cc8b49-9f9e-4652-b090-2b4db274f2b2" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/f7e65bab-866c-4fdb-bc89-d3bcb89cba84" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/f9cc8b49-9f9e-4652-b090-2b4db274f2b2" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/f7e65bab-866c-4fdb-bc89-d3bcb89cba84" width="380" height="230"/> |
 
 | 로그인 | 아이디 찾기 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/9cd8c549-5dd1-496e-a617-fdc032039f01" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/de6c358c-283b-4a67-a7ef-8be8e8b2117d" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/9cd8c549-5dd1-496e-a617-fdc032039f01" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/de6c358c-283b-4a67-a7ef-8be8e8b2117d" width="380" height="230"/> |
 
 | 비밀번호 찾기 | 플랫폼 조회 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/5b4a9072-3e32-422c-abdb-af429db28baa" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/cd1d8630-dcbc-4518-8d7e-2ce4abcf62a6" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/5b4a9072-3e32-422c-abdb-af429db28baa" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/cd1d8630-dcbc-4518-8d7e-2ce4abcf62a6" width="380" height="230"/> |
 
 | 구독 등록 | 리뷰 등록 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/59cdf913-c2a0-43a4-87bd-e3daf0658708" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/46b3d733-167b-46ff-b338-4f64e7e23735" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/59cdf913-c2a0-43a4-87bd-e3daf0658708" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/46b3d733-167b-46ff-b338-4f64e7e23735" width="380" height="230"/> |
 
 | 리뷰 수정 | 리뷰 삭제 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/b353b63d-0d74-4a3f-8f03-d5c6c6d71979" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/968f46e2-9bce-425d-9f6b-39e12c48025f" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/b353b63d-0d74-4a3f-8f03-d5c6c6d71979" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/968f46e2-9bce-425d-9f6b-39e12c48025f" width="380" height="230"/> |
 
 | 마이페이지(개인정보 수정) | 마이페이지(비밀번호 변경) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/c9633ccb-f5ad-4ee9-a742-741b17174c40" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/7ec6e426-4417-4f9e-9f75-9a5bc9d09ddb" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/c9633ccb-f5ad-4ee9-a742-741b17174c40" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/7ec6e426-4417-4f9e-9f75-9a5bc9d09ddb" width="380" height="230"/> |
 
 | 마이페이지(회원 탈퇴) | 마이페이지(내 구독 내역 조회) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/ae7db03e-7fa9-4d2f-92b4-faf94e444992" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/37a89b81-937f-4829-897a-5c5e73f0ec44" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/ae7db03e-7fa9-4d2f-92b4-faf94e444992" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/37a89b81-937f-4829-897a-5c5e73f0ec44" width="380" height="230"/> |
 
 | 마이페이지(구독 내역 수정) | 마이페이지(구독 취소) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/38603001-3870-4538-b0ba-78cdcfbbba17" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/80e36b62-0dfb-4738-a0a8-eddb9fb97463" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/38603001-3870-4538-b0ba-78cdcfbbba17" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/80e36b62-0dfb-4738-a0a8-eddb9fb97463" width="380" height="230"/> |
 
 | 마이페이지(내 리뷰 내역 조회) | 마이페이지(리뷰 삭제) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/c62816fb-0e7a-4ad4-bbef-1efa02a577fe" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/dd55a352-ecd8-4895-8fb9-443504a6de09" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/c62816fb-0e7a-4ad4-bbef-1efa02a577fe" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/dd55a352-ecd8-4895-8fb9-443504a6de09" width="380" height="230"/> |
 
 | 관리자페이지(회원 목록 조회) | 관리자페이지(회원 탈퇴) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/93ae738d-1732-4c1d-8644-5ac32e95bb50" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/c0477301-aac9-42bc-82a5-3bf699e13cef" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/93ae738d-1732-4c1d-8644-5ac32e95bb50" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/c0477301-aac9-42bc-82a5-3bf699e13cef" width="380" height="230"/> |
 
 | 관리자페이지(플랫폼 목록 조회) | 관리자페이지(플랫폼 삭제) |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/64b15038-980a-44af-8ae2-47062e4eae5e" width="400" height="240"/> | <img src="https://github.com/user-attachments/assets/888d5495-8036-4a7e-abc8-2a99d6b40130" width="400" height="240"/> |
+| <img src="https://github.com/user-attachments/assets/64b15038-980a-44af-8ae2-47062e4eae5e" width="380" height="230"/> | <img src="https://github.com/user-attachments/assets/888d5495-8036-4a7e-abc8-2a99d6b40130" width="380" height="230"/> |
 
 ---
 
